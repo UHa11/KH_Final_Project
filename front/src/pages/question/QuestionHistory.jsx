@@ -108,7 +108,7 @@ const QuestionHistory = () => {
           <div>처리 현황</div>
         </BoardItemTop>
         {currentList.map((info) => (
-          <BoardItem key={info.no} to={`/community/detail/${info.no}`}>
+          <BoardItem key={info.no} to={`/question/detail/${info.no}`}>
             <div>{info.no}</div>
             <div style={{ flex: '2' }}>{info.title}</div>
             <div>{info.name}</div>

@@ -106,12 +106,12 @@ const QuestionFull = () => {
           <div>작성자</div>
           <div>작성 일자</div>
         </BoardItemTop>
-        {currentList.map((community) => (
-          <BoardItem key={community.no} to={`/community/detail/${community.no}`}>
-            <div>{community.no}</div>
-            <div style={{ flex: '2' }}>{community.title}</div>
-            <div>{community.name}</div>
-            <div>{community.create_date}</div>
+        {currentList.map((info) => (
+          <BoardItem key={info.no} to={`/question/detail/${info.no}`}>
+            <div>{info.no}</div>
+            <div style={{ flex: '2' }}>{info.title}</div>
+            <div>{info.name}</div>
+            <div>{info.create_date}</div>
           </BoardItem>
         ))}
 

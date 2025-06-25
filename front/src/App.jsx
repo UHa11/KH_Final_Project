@@ -50,6 +50,7 @@ import GuardianCommunity from './pages/GuardianCommunity';
 import QuestionFull from './pages/question/QuestionFull';
 import QuestionCreate from './pages/question/QuestionCreate';
 import QuestionHistory from './pages/question/QuestionHistory';
+import QuestionDetail from './pages/question/QuestionDetail';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ function AppRoutes() {
           <Route path="/community/update/:no" element={<UpdateCommuBoardForm />} />
           <Route path="/question/full" element={<QuestionFull />} />
           <Route path="/question/history" element={<QuestionHistory />} />
+          <Route path="/question/detail/:no" element={<QuestionDetail />} />
           <Route path="/question/create" element={<QuestionCreate />} />
           <Route path="/community/notice" element={<NoticeBoard />} />
 
