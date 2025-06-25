@@ -94,7 +94,7 @@ const GuardianMainPage = () => {
                 <CardBottomContent>
                   <CardBottomTextSection>
                     <CardRegionText>
-                      <span>자격증</span> {resume.license === true ? 'O' : 'X'}
+                      <span>자격증</span> {resume.hasLicense === true ? 'O' : 'X'}
                     </CardRegionText>
                     <CardRegionText>
                       <span>지역</span> {resume.address}

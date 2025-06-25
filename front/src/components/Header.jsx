@@ -275,15 +275,6 @@ const Header = () => {
                 )}
 
                 {userStatus ? (
-                  <NavItem to="/guardian/hire-registration">
-                    <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
-                    돌봄대상자 신청
-                  </NavItem>
-                ) : (
-                  ''
-                )}
-
-                {userStatus ? (
                   <NavItem to="/guardian/jobopening-management">
                     <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />내 구인글 관리
                   </NavItem>

@@ -53,8 +53,12 @@ application-*.yml
 # =========================
 node_modules/
 .env
+<<<<<<< HEAD
+.mtj.tmp/
+=======
 .mtj.tmp/
 
 # 로그 및 환경설정 파일
 *.log
 *.lock
+>>>>>>> 37da3812195a7e4f30debba3095aac3ddbd233a2

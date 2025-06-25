@@ -80,7 +80,6 @@ public class Patient {
         }
     }
 
-
     public enum Gender {
         M, F
     }

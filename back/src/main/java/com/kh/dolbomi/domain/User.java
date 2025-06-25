@@ -1,13 +1,26 @@
 package com.kh.dolbomi.domain;
 
 import com.kh.dolbomi.enums.StatusEnum;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //JPA 스펙상 필수 + 외부 생성 방지
@@ -31,6 +44,7 @@ public class User {
     @Column(name = "USER_PWD", nullable = false, length = 100)
     private String userPwd;
 
+
     @Column(name = "USER_NAME", nullable = false, length = 10)
     private String userName;
 
@@ -50,46 +64,43 @@ public class User {
     @Column(name = "EMAIL", nullable = false, length = 20)
     private String email;
 
-    @Column(name = "STATUS", nullable = false,  length = 1)
+    @Column(name = "STATUS", nullable = false, length = 1)
     @Enumerated(EnumType.STRING)
     private StatusEnum.Status status;
 
     @Column(name = "PROFILE_IMAGE", length = 100)
     private String profileImage;
 
-    public enum Gender {
-        M, F
-    }
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // User <-> License 양방향 설정
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<License> licenses = new ArrayList<>();
 
+    public void updateUserInfo(String userName, Integer age, Gender gender, String phone, String address,
+                               String email) {
+        if (userName != null && !userName.trim().isEmpty()) {
+            this.userName = userName.trim();
+        }
 
-   public void updateUserInfo(String userName, Integer age, Gender gender, String phone, String address, String email) {
-       if (userName != null && !userName.trim().isEmpty()) {
-           this.userName = userName.trim();
-       }
+        if (age != null && age > 0) {
+            this.age = age;
+        }
 
-       if (age != null && age > 0) {
-           this.age = age;
-       }
+        if (gender != null) {
+            this.gender = gender;
+        }
 
-       if (gender != null) {
-           this.gender = gender;
-       }
+        if (phone != null && !phone.trim().isEmpty()) {
+            this.phone = phone.trim();
+        }
 
-       if (phone != null && !phone.trim().isEmpty()) {
-           this.phone = phone.trim();
-       }
+        if (email != null && !email.trim().isEmpty()) {
+            this.email = email.trim();
+        }
 
-       if (email != null && !email.trim().isEmpty()) {
-           this.email = email.trim();
-       }
-
-       if (address != null && !address.trim().isEmpty()) {
-           this.address = address.trim();
-       }
-   }
+        if (address != null && !address.trim().isEmpty()) {
+            this.address = address.trim();
+        }
+    }
 
 
     @PrePersist
@@ -102,5 +113,9 @@ public class User {
     // 비밀번호 암호화 변경 메서드
     public void changePassword(String encodedPassword) {
         this.userPwd = encodedPassword;
+    }
+
+    public enum Gender {
+        M, F
     }
 }
