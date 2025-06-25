@@ -5,6 +5,7 @@ import { ClipLoader } from 'react-spinners';
 import { FaPlus } from 'react-icons/fa6';
 import useUserStore from '../store/userStore';
 import useUserUpdateForm from '../hooks/useUserUpdateForm';
+import profileImg from '../assets/profileImg/img_간병인.png';
 import {
   GridForm,
   GridInerContainer,
@@ -18,15 +19,14 @@ import {
 
 import { AuthContainer, Label, Input, InputGroup } from '../styles/Auth.styles';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const MyProfile = () => {
-  const [error, setError] = useState(null);
+  const userNo = useUserStore((state) => state.user?.userNo);
   const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const userId = useUserStore((state) => state.user?.userId);
   const [licenseList, setLicenseList] = useState([]);
   const [formData, setFormData] = useState({
-    userId: '', // 아이디 필드도 포함
+    userId: '',
     userName: '',
     age: '',
     gender: '',
@@ -34,26 +34,30 @@ const MyProfile = () => {
     email: '',
     address: '',
   });
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadProfile = async () => {
-      if (!userId) {
+      if (!userNo) {
         setLoading(false);
         setError('사용자 ID를 사용할 수 없습니다.');
         toast.error('사용자 ID를 사용할 수 없습니다.');
         return;
       }
       try {
-        const info = await userService.getUserProfile(userId);
-        console.log(info);
+        const info = await userService.getUserProfile(userNo);
+        console.log('profile data:', info);
 
-        if (info && info.length > 0) {
-          const userProfileData = info[0]; // 배열의 첫 번째 요소 사용
-          setProfile(userProfileData); // 프로필 원본 데이터 저장
+        // info가 배열인지 객체인지에 따라 처리
+        const userProfileData = Array.isArray(info) ? info[0] : info;
 
-          // formData 초기화
+        if (userProfileData) {
+          setProfile(userProfileData);
+
           setFormData({
-            userId: userProfileData.userId || '', // 아이디 필드 추가
+            userId: userProfileData.userId || '',
             userName: userProfileData.userName || '',
             age: userProfileData.age || '',
             gender: userProfileData.gender || '',
@@ -65,9 +69,6 @@ const MyProfile = () => {
           if (userProfileData.licenses && userProfileData.licenses.length > 0) {
             setLicenseList(userProfileData.licenses);
           }
-        } else {
-          setError('프로필 데이터를 찾을 수 없습니다.');
-          toast.warn('프로필 데이터를 찾을 수 없습니다.');
         }
       } catch (error) {
         console.error('프로필 로드 실패:', error);
@@ -79,7 +80,7 @@ const MyProfile = () => {
       }
     };
     loadProfile();
-  }, []);
+  }, [userNo]);
 
   const { validateAndSubmit, updating } = useUserUpdateForm({ profile });
 
@@ -132,12 +133,14 @@ const MyProfile = () => {
   // 폼 제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!userNo) {
+      toast.error('사용자 번호가 없습니다.');
+      return;
+    }
     try {
-      await validateAndSubmit(formData, licenseList);
-      console.log('회원정보 업데이트 데이터:', formData);
-      toast.success('회원정보가 성공적으로 수정되었습니다.');
+      // userNo 포함해서 넘기기
+      await validateAndSubmit({ ...formData, userNo }, licenseList);
     } catch (err) {
-      console.error('회원정보 수정 실패:', err);
       toast.error('회원정보 수정 중 문제가 발생했습니다.');
     }
   };
@@ -150,7 +153,7 @@ const MyProfile = () => {
   };
 
   const addLicense = () => {
-    setLicenseList([...licenseList, { license_name: '', license_publisher: '', license_date: '' }]);
+    setLicenseList([...licenseList, { licenseName: '', licensePublisher: '', licenseDate: '' }]);
   };
 
   const removeLicense = (index) => {
@@ -180,7 +183,7 @@ const MyProfile = () => {
         <ProfileImage onClick={handleDivClick}>
           {previewUrl ? (
             <img
-              src={previewUrl}
+              src={previewUrl || profileImg}
               alt="미리보기"
               style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
             />
@@ -245,19 +248,19 @@ const MyProfile = () => {
                 <Input
                   type="text"
                   placeholder="자격증명"
-                  value={license.license_name}
-                  onChange={(e) => handleLicenseChange(index, 'license_name', e.target.value)}
+                  value={license.licenseName}
+                  onChange={(e) => handleLicenseChange(index, 'licenseName', e.target.value)}
                 />
                 <Input
                   type="text"
                   placeholder="발급기관"
-                  value={license.license_publisher}
-                  onChange={(e) => handleLicenseChange(index, 'license_publisher', e.target.value)}
+                  value={license.licensePublisher}
+                  onChange={(e) => handleLicenseChange(index, 'licensePublisher', e.target.value)}
                 />
                 <Input
                   type="date"
-                  value={license.license_date}
-                  onChange={(e) => handleLicenseChange(index, 'license_date', e.target.value)}
+                  value={license.licenseDate}
+                  onChange={(e) => handleLicenseChange(index, 'licenseDate', e.target.value)}
                 />
                 <Button type="button" onClick={() => removeLicense(index)}>
                   삭제
@@ -280,7 +283,7 @@ const MyProfile = () => {
               {' '}
               {updating ? '수정 중...' : '수정하기'}
             </Button>
-            <Button type="button" onClick={() => toast.info('뒤로가기 기능은 아직 구현되지 않았습니다.')}>
+            <Button type="button" onClick={() => navigate(-1)}>
               뒤로가기
             </Button>
           </ButtonGroup>
@@ -304,6 +307,8 @@ const Form = styled(GridForm)`
 
 const Button = styled(SubmitBtn)`
   font-size: ${({ theme }) => theme.fontSizes.md};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  margin-bottom: 0px;
 `;
 
 const LicenseGroup = styled(InputGroup)`

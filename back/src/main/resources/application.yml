@@ -1,34 +1,70 @@
 spring:
   application:
     name: dolbomi
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
 
   datasource:
-    hikari:
-      # 이부분은 본인 경로로 변경하셔야 됩니다
-      jdbc-url: jdbc:h2:tcp://localhost/file:/Users/jinseok/KH_Project/KH_Final_Project/back/tdb
-      driver-class-name: org.h2.Driver
-      username: sa
-      password: 1234
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 100MB
+    url: jdbc:mysql://localhost:3306/tdb?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: user01
+    password: pass01
+
   jpa:
     hibernate:
       ddl-auto: create
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
 
 server:
   port: 8555
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
 
+  datasource:
+    url: RDB URL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: prod_user
+    password: prod_pass
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+
+server:
+  port: 8080
   servlet:
     encoding:
       charset: UTF-8

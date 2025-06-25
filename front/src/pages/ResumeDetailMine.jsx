@@ -12,7 +12,8 @@ import { proposerSevice } from '../api/propose';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
-import { resumeService } from '../api/resume';
+
+import { jobSeekingService } from '../api/jobSeeking';
 
 const ResumeDetailMine = () => {
   const { user } = useUserStore();
@@ -30,9 +31,10 @@ const ResumeDetailMine = () => {
 
     // 이력서의 번호로 가져온다 (resumeNo)
     const getResume = async () => {
-      const getOneResum = await resumeService.getOneResumeById(1);
+      const getOneResum = await jobSeekingService.getResume(resumeNo);
       console.log(getOneResum);
     };
+    getResume();
 
     // 구인글을 가져온다. => 신청테이블에서 이력서의 번호로(resumeNo) 구인글을 가져온다
     const getList = async () => {
@@ -44,23 +46,6 @@ const ResumeDetailMine = () => {
 
   return (
     <>
-      <Wrapper>
-        <ImageStack>
-          {proposerList.slice(0, 3).map((list, index) => (
-            <ProfileImg
-              key={index}
-              src={list.profileImage}
-              style={{ left: `${index * 20}px`, zIndex: proposerList.length - index }}
-            />
-          ))}
-        </ImageStack>
-
-        <NewTitle>지원현황 {proposerList.length}명</NewTitle>
-        <ActionButton type="button" onClick={() => navigate('/caregiver/guardianSupportBoard')}>
-          확인하기
-        </ActionButton>
-      </Wrapper>
-
       <HireRegistSection>
         <HireContainer>
           <HireHead>
@@ -172,8 +157,8 @@ const ResumeDetailMine = () => {
 
             <ButtonGroup>
               <BackButton>이전</BackButton>
-              <SubmitButton1 type="submit">모집종료</SubmitButton1>
-              <SubmitButton1 type="button">수정/삭제하기</SubmitButton1>
+              <SubmitButton1 type="button">지원취소</SubmitButton1>
+              <SubmitButton1 type="button">수정하기</SubmitButton1>
             </ButtonGroup>
           </form>
         </HireContainer>
@@ -182,40 +167,6 @@ const ResumeDetailMine = () => {
   );
 };
 
-/* ======== 지원자 현황  ========*/
-const Wrapper = styled.div`
-  width: 80%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 50px;
-  gap: 50px;
-  margin: 20px auto;
-  margin-top: 30px;
-  border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  box-shadow: ${({ theme }) => theme.shadows.md};
-`;
-const ImageStack = styled.div`
-  position: relative;
-  height: 50px;
-  width: 20%;
-  margin-bottom: 16px;
-`;
-
-const ProfileImg = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  position: absolute;
-  border: 2px solid white;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
 
 /* ======== main   ========*/
 

@@ -34,6 +34,20 @@ const ReportDetail = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const save = await reportService.removeReports(report);
+      console.log(save); //확인용
+    } catch (error) {
+      console.error(error);
+      const errorMessage = '리뷰를 삭제하는데 실패했습니다.';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      navigate(`/report/${report.patNo}`);
+    }
+  };
+
   if (error) {
     return null;
   }
@@ -49,7 +63,7 @@ const ReportDetail = () => {
             2. {report.patNo && ( ... )} 걸어줘서 아래 수정 삭제 버튼 안보이게하기
           */}
           <>
-            <Btn>
+            <Btn onClick={handleDelete}>
               <ButtonText>삭제</ButtonText>
             </Btn>
             <Btn onClick={() => setState(!state)}>

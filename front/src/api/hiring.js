@@ -22,6 +22,7 @@ export const hiringService = {
   //세부 구인목록가져오기
   getHirngById: async (hiringNo) => {
     try {
+      // 상세 보기에 들어가는 모든 정보(환자 정보, 보호자 전화번호, 보유질병, 제목,시급 등...) 불러와야함 실제 서버에서
       const { data } = await api.get(API_ENDPOINTS.HIRING.DETAIL(hiringNo));
 
       return snakeToCamel(data[0]);

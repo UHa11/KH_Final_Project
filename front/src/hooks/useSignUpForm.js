@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { userService } from '../api/users';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 //회원가입 폼의 유효성 검사 스키마
 const signUpSchema = yup.object().shape({
@@ -78,6 +78,12 @@ export const useSignUpForm = () => {
   });
 
   const userId = watch('userId'); //현재 입력된 아이디를 감시
+
+  useEffect(() => {
+    // userId 변경 시 아이디 중복 검사 상태 초기화
+    setIsIdChecked(false);
+    setIdCheckMessage('');
+  }, [userId]);
 
   const checkUserId = async () => {
     if (!userId || userId.length < 5) {

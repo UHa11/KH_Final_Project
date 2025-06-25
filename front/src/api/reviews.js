@@ -44,4 +44,10 @@ export const reviewService = {
       throw new Error('서버 통신 불량');
     }
   },
+
+  getReviewsByUser: async (userNo) => {
+    const response = await api.get(API_ENDPOINTS.REVIEWS.DETAIL(userNo));
+
+    return snakeToCamel(response).data;
+  },
 };

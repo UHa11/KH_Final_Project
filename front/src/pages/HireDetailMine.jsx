@@ -35,7 +35,10 @@ const HireDetail = () => {
     const getJobOpening = async () => {
       const getOneJobOpening = await hiringService.getHirngById(1);
       setJobOpening(getOneJobOpening);
+      
+      console.log(getOneJobOpening);
     };
+
     getJobOpening();
 
     // 구직글을 가져온다. => 신청테이블에서 구인글의 번호로(hiringNo) 구직글을 가져온다
@@ -64,7 +67,7 @@ const HireDetail = () => {
     <>
       <Wrapper>
         <ImageStack>
-       {proposerList.slice(0, 3).map((list, index) => (
+          {proposerList.slice(0, 3).map((list, index) => (
             <ProfileImg
               key={index}
               src={list.profileImage}
@@ -159,7 +162,7 @@ const HireDetail = () => {
               <Label>보유한 질병</Label>
               <DiseaseInputDiv>
                 <TagsUl id="tags">
-                  {jobOpening?.tags.map((tag, index) => (
+                  {jobOpening?.tags?.map((tag, index) => (
                     <li key={index}>
                       <span>{tag}</span>
                     </li>

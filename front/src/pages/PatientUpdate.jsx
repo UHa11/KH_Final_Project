@@ -11,6 +11,8 @@ import {
   NotesTexttarea,
   SubmitBtn,
   Img,
+  BackBtn,
+  BtnWrap,
 } from '../styles/PatientRegistration';
 import { Label, Input, InputGroup } from '../styles/Auth.styles';
 import { usepatientRegistrationForm } from '../hooks/usePatientRegistrationForm';
@@ -22,7 +24,7 @@ import Tags from '../components/Tags';
 
 const PatientUpdate = () => {
   const { user, userStatus } = useUserStore();
-  const { id } = useParams();
+  const { patNo } = useParams();
   const [patient, setPatinet] = useState();
 
   const { register, handleSubmit, errors, isSubmitting, watch, setValue } = usepatientRegistrationForm();
@@ -37,20 +39,17 @@ const PatientUpdate = () => {
     } else {
       const getPatient = async () => {
         try {
-    
-          const onePatient = await patientService.getPatientId(id);
+          const onePatient = await patientService.getPatientId(patNo);
           setPatinet(onePatient);
-
         } catch (error) {
           console.log(error);
         }
       };
       getPatient();
     }
-  }, [user, userStatus, id]);
+  }, [user, userStatus, patNo]);
 
   useEffect(() => {
-  
     if (patient) {
       setValue('patName', patient.patName || '');
       setValue('patAge', patient.patAge || '');
@@ -75,8 +74,7 @@ const PatientUpdate = () => {
 
   const onSubmit = async (data) => {
     try {
-
-      await patientService.updatePatinet(patient.patNo,{ ...patient, ...data });
+      await patientService.updatePatinet(patient.patNo, { ...patient, ...data });
       toast.success('돌봄대상자 수정완료!');
       navigate('/guardian/patient');
     } catch (error) {
@@ -169,12 +167,15 @@ const PatientUpdate = () => {
               <Label htmlFor="patContent">환자 특이사항</Label>
               <NotesTexttarea id="notes" className="textarea-field" rows="5" {...register('patContent')} />
             </InputGroup>
-            <GridInerContainer>
+            <BtnWrap>
+              <BackBtn type="button" onClick={() => navigate(-1)}>
+                이전
+              </BackBtn>
               <SubmitBtn type="submit">수정</SubmitBtn>
               <SubmitBtn type="button" onClick={() => deletePatient(id)}>
                 삭제
               </SubmitBtn>
-            </GridInerContainer>
+            </BtnWrap>
           </GridForm>
         </FromWrap>
       </AuthContainer>

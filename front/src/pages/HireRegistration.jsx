@@ -1,31 +1,78 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 
-import {
-  AuthContainer,
-  Button,
-  Input,
-  InputGroup,
-  Title,
-  Form,
-  AuthLink,
-  ErrorMessage,
-  InputContainer,
-} from '../styles/Auth.styles';
+import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
 import { FaPlus } from 'react-icons/fa6';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { patientService } from '../api/patient';
+import useUserStore from '../store/userStore';
+import { guardianHiringForm } from '../hooks/guardianHiringForm';
+import { hiringService } from '../api/hiring';
 
 const HireRegistration = () => {
+  const { user } = useUserStore();
+
+  const [userPatients, setUserpatients] = useState();
+  const [patient, setPatient] = useState();
+  const [selectPatientNo, setSelectPatientNo] = useState(undefined);
+  const navigate = useNavigate();
+
+  //숙소 이미지 넣기
   const inputRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const handleDivClick = () => {
     inputRef.current?.click(); // 파일 선택창 열기
   };
 
-  const handleFileChange = (e) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = guardianHiringForm();
+
+  const currentCareStatus = watch('careStatus');
+
+  useEffect(() => {
+    console.log('폼 에러:', errors);
+  }, [errors]);
+
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      if (!user) {
+        alert('로그인 후 이용해주세요');
+        return;
+      }
+
+      try {
+        const patientsList = await patientService.getPatients(user.userNo);
+        setUserpatients(patientsList);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchAll();
+  }, [user]);
+
+  const getPatient = (patNo) => {
+    // patNo가 빈값이면 patient도 초기화
+    if (!patNo) {
+      setPatient(null);
+      return;
+    }
+
+    setSelectPatientNo(patNo);
+    const patient = userPatients.find((p) => p.patNo === Number(patNo));
+    setPatient(patient);
+  };
+
+const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       console.log('선택된 파일:', file.name);
@@ -37,20 +84,34 @@ const HireRegistration = () => {
     }
   };
 
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      await hiringService.postNewHiring({ ...data, patNo: Number(selectPatientNo) });
+      toast.success('돌봄대상자 등록 완료!');
+      navigate('/guardian/jobopening-management');
+    } catch (error) {
+      toast.error('돌봄대상자 등록 중 문제가 발생하였습니다.');
+      console.error('돌본대상자 등록 에러 : ', error);
+    }
+  };
+
   return (
     <HireRegistSection>
       <HireContainer>
         <HireHead>
-          <HireHeadTitle>돌봄대상자 신청</HireHeadTitle>
+          <HireHeadTitle>구인 등록</HireHeadTitle>
 
-          <SelectBox>
-            <option value="">돌봄대상자 선택</option>
-            <option value="서울">김oo</option>
-            <option value="부산">이00</option>
-            <option value="제주">박00</option>
+          <SelectBox id="userPatients" value={selectPatientNo} onChange={(e) => getPatient(e.target.value)}>
+            <option value="">돌봄대상자를 선택해주세요</option>
+            {userPatients?.map((p) => (
+              <option key={p.patNo} value={p.patNo}>
+                {p.patName}
+              </option>
+            ))}
           </SelectBox>
         </HireHead>
-        <form action="">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <ContentWrapper>
             <div>
               <ProfilImageWrapper>
@@ -60,40 +121,55 @@ const HireRegistration = () => {
             <Divider>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" value={'김옥순'} />
+                <Input type="text" readOnly value={patient?.patName} />
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>
-                <Input type="text" value={'85'} />
+                <Input type="text" readOnly value={patient?.patAge} />
               </InputGroup>
 
               <RadioGroup>
                 <Label>성별</Label>
+
                 <RadioWrapper>
-                  <input type="radio" id="male" name="gender" value="male" />
-                  <label htmlFor="male">남성</label>
+                  <input
+                    type="radio"
+                    id="M"
+                    name="patGender"
+                    value="M"
+                    readOnly
+                    checked={patient?.patGender === 'M'} // watch 값으로 제어
+                  />
+                  <label htmlFor="M">남성</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input type="radio" id="female" name="gender" value="female" />
-                  <label htmlFor="female">여성</label>
+                  <input
+                    type="radio"
+                    id="F"
+                    name="patGender"
+                    value="F"
+                    readOnly
+                    checked={patient?.patGender === 'F'} // watch 값으로 제어
+                  />
+                  <label htmlFor="F">여성</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
                 <Label>보호자 전화번호</Label>
-                <Input type="text" value={'010-1111-1111'} />
+                <Input type="text" readOnly value={patient?.phone} />
               </InputGroup>
               <InputGroup>
                 <Label>주소</Label>
-                <Input type="text" value={'서울시'} />
+                <Input type="text" readOnly value={patient?.patAddress} />
               </InputGroup>
               <InputRow>
                 <InputGroup>
                   <Label>키</Label>
-                  <Input type="text" value={'160 cm'} />
+                  <Input type="text" readOnly value={patient?.patHeight} />
                 </InputGroup>
                 <InputGroup>
                   <Label>몸무게</Label>
-                  <Input type="text" value={'42 kg'} />
+                  <Input type="text" readOnly value={patient?.patWeight} />
                 </InputGroup>
               </InputRow>
             </Divider>
@@ -102,9 +178,15 @@ const HireRegistration = () => {
             <DiseaseGroup>
               <Label>보유한 질병</Label>
               <DiseaseInputDiv>
-                <div>치매</div>
-                <div>고혈압</div>
-                <div>당뇨</div>
+                <TagsUl id="tags">
+                  {Array.isArray(patient?.tags) && patient.tags.length > 0
+                    ? patient.tags.map((tag, index) => (
+                        <li key={index} readOnly>
+                          <span>{tag}</span>
+                        </li>
+                      ))
+                    : ''}
+                </TagsUl>
               </DiseaseInputDiv>
             </DiseaseGroup>
           </ContentWrapper>
@@ -114,37 +196,37 @@ const HireRegistration = () => {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input type="text" value={'제목입니다 '} />
+              <Input {...register('hiringTitle')} type="text" />
               <InputGird>
                 <InputGroup>
                   <Label>지급 금액 (시급)</Label>
-                  <Input type="text" value={'15000'} />
+                  <Input type="text" {...register('account')} />
                 </InputGroup>
                 <InputGroup>
                   <Label>시작일</Label>
-                  <Input type="date" value={''} />
+                  <Input {...register('startDate')} type="date" />
                 </InputGroup>
 
                 <InputGroup>
                   <Label>종료일</Label>
-                  <Input type="date" value={''} />
+                  <Input {...register('endDate')} type="date" />
                 </InputGroup>
                 <InputGroup>
                   <Label>모집 인원수 설정</Label>
-                  <Input type="number" value={'1'} />
+                  <Input type="number" {...register('maxApplicants')} />
                 </InputGroup>
               </InputGird>
               <Label>내용</Label>
-              <Content type="text" value={'제목입니다 '} />
+              <Content type="textarea" {...register('hiringContent')} />
               <RadioGroup>
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
-                  <input type="radio" id="careStatus" name="careStatus" value="careStatus" />
-                  <label htmlFor="careStatus">0</label>
+                  <input type="radio" id="Y" name="careStatus" value="Y" {...register('careStatus')} />
+                  <label htmlFor="Y">숙식 가능</label>
                 </RadioWrapper>
                 <RadioWrapper>
-                  <input type="radio" id="careStatus" name="careStatus" value="careStatus" />
-                  <label htmlFor="careStatus">X</label>
+                  <input type="radio" id="N" name="careStatus" value="N" {...register('careStatus')} />
+                  <label htmlFor="N">숙식 불가능</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
@@ -171,11 +253,14 @@ const HireRegistration = () => {
               </InputGroup>
             </HireContent>
           </ContentWrapper1>
+
+          <ButtonGroup>
+            <BackButton type="button" onClick={() => navigate(-1)}>
+              이전
+            </BackButton>
+            <SubmitButton1 type="submit">등록하기</SubmitButton1>
+          </ButtonGroup>
         </form>
-        <ButtonGroup>
-          <BackButton>이전</BackButton>
-          <SubmitButton1>신청하기</SubmitButton1>
-        </ButtonGroup>
       </HireContainer>
     </HireRegistSection>
   );
@@ -219,6 +304,7 @@ const ContentWrapper = styled.div`
   padding: ${({ theme }) => theme.spacing[6]}; /* 전체 패딩 */
   gap: ${({ theme }) => theme.spacing[6]}; /* 이미지와 입력 필드 그룹 사이 간격 */
   justify-content: space-around;
+
   ${media.md`
     flex-direction: row;
     padding: ${({ theme }) => theme.spacing[8]}; /* 큰 화면에서 패딩 증가 */
@@ -452,5 +538,29 @@ const Plus = styled(FaPlus)`
   width: 30px;
   height: 30px;
   color: white;
+`;
+
+// ============= 태그 ========
+export const TagsUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 8px 0 0 0;
+
+  li {
+    min-width: 80px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${({ theme }) => theme.colors.white};
+    padding: 0 ${({ theme }) => theme.spacing[3]};
+    font-size: ${({ theme }) => theme.fontSizes.base};
+    list-style: none;
+    border-radius: 4px;
+    margin: 0 8px 8px 0;
+    background: ${({ theme }) => theme.colors.primary};
+    gap: ${({ theme }) => theme.spacing[2]};
+  }
 `;
 export default HireRegistration;

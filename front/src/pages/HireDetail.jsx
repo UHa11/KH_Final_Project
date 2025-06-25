@@ -11,33 +11,68 @@ import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import useUserStore from '../store/userStore';
 import { hiringService } from '../api/hiring';
 import { useParams } from 'react-router-dom';
-
 import { guardianHiringForm } from '../hooks/guardianHiringForm';
-import Paging from '../components/Paging';
+import ResumeSelectModal from '../components/ResumeSelectModal';
+import { proposerSevice } from '../api/propose';
 
 const HireDetail = () => {
   const navigate = useNavigate();
   const { hiringNo } = useParams();
   const { user } = useUserStore();
   const [jobOpening, setJobOpening] = useState();
+  const [alreadyApplied, setAlreadyApplied] = useState(false); // 신청 여부 상태 추가
 
   const { register, handleSubmit, errors, isSubmitting, watch, setValue } = guardianHiringForm();
 
   const currentGender = watch('patGender');
 
-  //수정중
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
+
+  //  신청 상태 확인
+  const fetchProposerStatus = async () => {
+    try {
+      const list = await proposerSevice.getcareGiverLists(Number(hiringNo));
+      const applied = list.some((item) => item.caregiverNo === user.userNo && item.status === 'N');
+      setAlreadyApplied(applied);
+    } catch (err) {
+      console.error('신청 상태 확인 실패', err);
+    }
+  };
+  // 신청 취소 핸들러
+  const handleCancel = async () => {
+    const confirm = window.confirm('신청을 취소하시겠습니까?');
+    if (!confirm) return;
+
+    try {
+      // 서버에 맞는 DELETE API 필요 (예: /proposer/{resumeNo}/{hiringNo})
+      await proposerSevice.cancelProposer({
+        caregiverNo: user.userNo,
+        hiringNo: Number(hiringNo),
+      });
+      alert('신청이 취소되었습니다.');
+      setAlreadyApplied(false);
+    } catch (err) {
+      alert('신청 취소 실패');
+      console.error(err);
+    }
+  };
+
+  //  신청 성공 시 상태 반영
+  const handleApply = () => {
+    setAlreadyApplied(true);
+  };
   useEffect(() => {
-    console.log(user);
-
-    const getJobOpening = async () => {
+    const init = async () => {
       const getOneJobOpening = await hiringService.getHirngById(Number(hiringNo));
-      console.log(getOneJobOpening);
       setJobOpening(getOneJobOpening);
+
+      await fetchProposerStatus(); // ✅ 상태 확인
     };
-
-    getJobOpening();
+    init();
   }, []);
-
   return (
     <HireRegistSection>
       <HireContainer>
@@ -156,7 +191,7 @@ const HireDetail = () => {
                 <Label>숙식 제공 여부</Label>
                 <RadioWrapper>
                   <input type="radio" id="careStatus" {...register('careStatus')} name="careStatus" />
-                  <label htmlFor="careStatus">0</label>
+                  <label htmlFor="careStatus">가능</label>
                 </RadioWrapper>
                 <RadioWrapper>
                   <input
@@ -167,7 +202,7 @@ const HireDetail = () => {
                     value="careStatus"
                     readOnly
                   />
-                  <label htmlFor="careStatus">X</label>
+                  <label htmlFor="careStatus">불가능</label>
                 </RadioWrapper>
               </RadioGroup>
               <InputGroup>
@@ -181,10 +216,30 @@ const HireDetail = () => {
             </HireContent>
           </ContentWrapper1>
         </form>
-        {/* <Paging></Paging> */}
+
         <ButtonGroup>
           <BackButton onClick={() => navigate(-1)}>이전</BackButton>
-          <SubmitButton1>신청하기</SubmitButton1>
+
+          {alreadyApplied ? (
+            <SubmitButton1 type="button" onClick={handleCancel}>
+              신청취소
+            </SubmitButton1>
+          ) : (
+            <SubmitButton1 type="button" onClick={handleOpenModal}>
+              신청하기
+            </SubmitButton1>
+          )}
+
+          {isModalOpen && (
+            <ResumeSelectModal
+              hiringNo={hiringNo}
+              onClose={handleCloseModal}
+              onSuccess={(resumeNo) => {
+                handleApply();
+                setModalOpen(false);
+              }}
+            />
+          )}
         </ButtonGroup>
       </HireContainer>
     </HireRegistSection>

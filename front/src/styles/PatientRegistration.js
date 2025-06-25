@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Button } from './Auth.styles';
 import { Title } from './Auth.styles';
+import {MainMoveButton, MainSubmitButton} from './common/Button';
 
 export const FromWrap = styled.div`
   background-color: white;
@@ -16,8 +17,8 @@ export const GridForm = styled.form`
 `;
 
 export const NewTitle = styled(Title)`
- text-align: left;
- padding: ${({ theme }) => theme.spacing[8]};
+  text-align: left;
+  padding: ${({ theme }) => theme.spacing[8]};
 `;
 
 export const Img = styled.img`
@@ -97,29 +98,41 @@ export const DiseaseDiv = styled.div`
   grid-template-columns: 4fr 1fr;
 
   input {
-    border-radius: 4px 0px 4px 0px;
+    border-radius: ${({ theme }) => theme.borderRadius.md} 0 ${({ theme }) => theme.borderRadius.md} 0;
   }
 `;
 
 export const DiseaseBtn = styled(Button)`
-  border-radius: 0 4px 4px 0;
+  border-radius: 0  ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md}  0;
 `;
 export const NotesTexttarea = styled.textarea`
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
-  border-radius: 4px;
+  border-radius:  ${({ theme }) => theme.borderRadius.md};
   resize: none;
 `;
-
+export const BtnWrap = styled.div`
+display: flex;
+gap: ${({ theme }) => theme.spacing[3]};
+`
+export const BackBtn = styled(Button)`
+  
+background-color: ${({ theme }) => theme.colors.white};
+border: 1px solid ${({ theme }) => theme.colors.gray[3]};
+color: ${({ theme }) => theme.colors.black1};
+`
 export const SubmitBtn = styled(Button)`
   margin-bottom: 50px;
 `;
+
+
+
 export const TagsUl = styled.ul`
   display: flex;
   flex-wrap: wrap;
   padding: 0;
   margin: 8px 0 0 0;
-  
+
   li {
     width: auto;
     height: 32px;
@@ -128,12 +141,13 @@ export const TagsUl = styled.ul`
     justify-content: center;
     color: ${({ theme }) => theme.colors.primary};
     padding: 0 ${({ theme }) => theme.spacing[3]};
-    font-size:  ${({ theme }) => theme.fontSizes.base};
+    font-size: ${({ theme }) => theme.fontSizes.base};
     list-style: none;
-    border-radius: 12px;
+    border-radius:  ${({ theme }) => theme.borderRadius.xl};
     margin: 0 8px 8px 0;
     background: ${({ theme }) => theme.colors.gray[5]};
-    gap:${({ theme }) => theme.spacing[2]} ;
-
+    gap: ${({ theme }) => theme.spacing[2]};
   }
+
+
 `;

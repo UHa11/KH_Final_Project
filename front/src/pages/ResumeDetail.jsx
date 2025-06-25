@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
-import { Container, Section } from '../styles/common/Container';
+import React, { useEffect, useState } from 'react';
+import { Container, GridContainer, Section } from '../styles/common/Container';
 import profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import styled from 'styled-components';
 import { Input, InputGroup, Title } from '../styles/Auth.styles';
 import { media } from '../styles/MediaQueries';
 import { SubmitButton } from '../styles/common/Button';
-
+import {
+  Card,
+  CardTopContent,
+  CardImage,
+  CardTextGroup,
+  CardTitle,
+  CardText,
+  CardMidBottomContent,
+  ReviewTextBox,
+  ReviewFooter,
+  ReviewScore,
+  ReviewDate,
+} from './GuardianMainPage';
 // import { useParams } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa6';
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
@@ -14,18 +26,89 @@ import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이�
 import Paging from '../components/Paging';
 import { useNavigate } from 'react-router-dom';
 import PatientSelectModal from '../components/PatientSelectModal';
-
+import { useParams } from 'react-router-dom';
+import { jobSeekingService } from '../api/jobSeeking';
+import { reviewService } from '../api/reviews';
+import { userService } from '../api/users';
 function ResumeDetail() {
-  const navigate = useNavigate();
-  // const { resumeNo } = useParams();
-  // const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
-
   const [activeTab, setActiveTab] = useState('info');
+  const ITEMS_PER_PAGE = 4;
+  const [reviews, setReviews] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { resumeNo } = useParams();
+  const [resumeData, setResumeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  //이건 만약 dto로 유저정보+자격증 까지 불러오지 않고 get을 한번 더 보낼려면~
+  // const [userInfo, setUserInfo] = useState(null);
+
+  /*작성자의 리뷰를 갖고오는 코드 */
+  useEffect(() => {
+    if (activeTab === 'review' && resumeData?.userNo) {
+      const fetchUserReviews = async () => {
+        try {
+          const userReviews = await reviewService.getReviewsByUser(resumeData.userNo);
+          setReviews(userReviews);
+          setCurrentPage(1); // 탭 전환 시 페이지 초기화
+        } catch (error) {
+          console.error('리뷰 로딩 실패:', error);
+        }
+      };
+
+      fetchUserReviews();
+    }
+  }, [activeTab, resumeData]);
+
+  /*페이지 처리 */
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const totalPage = Math.ceil(reviews.length / ITEMS_PER_PAGE);
+
+  const averageScore = (reviews.reduce((acc, cur) => acc + cur.score, 0) / reviews.length || 0).toFixed(1);
+
+  const chagneCurrentPage = (value) => {
+    setCurrentPage(value);
+  };
+
+  //이것도 마찬가지로 유저정보 + 이력서 갖고오는 기능
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     if (!resumeData?.userNo) return;
+
+  //     try {
+  //       const data = await userService.getUserProfile(resumeData.userNo);
+  //       setUserInfo(data[0]); // userService.getUserProfile이 배열 반환 시
+  //     } catch (err) {
+  //       console.error('유저 정보 불러오기 실패:', err);
+  //     }
+  //   };
+
+  //   fetchUserInfo();
+  // }, [resumeData?.userNo]);
+
+  /*이력서 정보를 갖고오는 (유저 정보 담아서) */
+  useEffect(() => {
+    const fetchResume = async () => {
+      try {
+        const data = await jobSeekingService.getResume(resumeNo);
+        console.log(data);
+        setResumeData(data[0]);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResume();
+  }, [resumeNo]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
+  /*아 */
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);
@@ -38,6 +121,9 @@ function ResumeDetail() {
       navigate('/guardian/matchpage'); // 원하는 경로로 이동
     }
   };
+
+  if (loading) return <div>로딩 중...</div>;
+  if (error) return <div>에러: {error}</div>;
   return (
     <HireRegistSection>
       <HireContainer>
@@ -59,48 +145,54 @@ function ResumeDetail() {
             <InputRow>
               <InputGroup>
                 <Label>이름</Label>
-                <Input type="text" value={'김지원'} readOnly />
+                <Input type="text" value={resumeData?.userName || ''} readOnly />
               </InputGroup>
               <InputGroup>
                 <Label>나이</Label>
-                <Input type="text" value={'35'} readOnly />
+                <Input type="text" value={resumeData?.age || ''} readOnly />
               </InputGroup>
             </InputRow>
             <RadioGroup>
               <Label>성별</Label>
               <RadioWrapper>
-                <input type="radio" id="male" name="gender" value="M" readOnly />
+                <input type="radio" id="male" name="gender" value="M" readOnly checked={resumeData?.gender === 'M'} />
                 <label htmlFor="male">남성</label>
               </RadioWrapper>
               <RadioWrapper>
-                <input type="radio" id="female" name="gender" value="F" readOnly />
+                <input type="radio" id="female" name="gender" value="F" readOnly checked={resumeData?.gender === 'F'} />
                 <label htmlFor="female">여성</label>
               </RadioWrapper>
             </RadioGroup>
             <InputGroup>
               <Label>전화번호</Label>
-              <Input type="text" value={'010111111111'} readOnly />
+              <Input type="text" value={resumeData?.phone || ''} readOnly />
             </InputGroup>
             <InputGroup>
               <Label>주소</Label>
-              <Input type="text" value={'강원도 강릉시 ~~~'} readOnly />
+              <Input type="text" value={resumeData?.address || ''} readOnly />
             </InputGroup>
           </Divider>
         </ContentWrapper>
 
         <ContentWrapper2>
-          <LicenseGroup>
-            <Label>자격증 명</Label>
-            <LicenseInput type="text" value={'운전면허증'} readOnly />
-          </LicenseGroup>
-          <LicenseGroup>
-            <Label>발행처</Label>
-            <LicenseInput type="text" value={'서울시청'} readOnly />
-          </LicenseGroup>
-          <LicenseGroup>
-            <Label>발행일</Label>
-            <LicenseInput type="date" value={'2025-12-20'} readOnly />
-          </LicenseGroup>
+          {resumeData?.licenses?.map((license, index) => (
+            <>
+              <LicenseCard key={index}>
+                <LicenseGroup>
+                  <Label>자격증 명</Label>
+                  <LicenseInput type="text" value={license.licenseName} readOnly />
+                </LicenseGroup>
+                <LicenseGroup>
+                  <Label>발행처</Label>
+                  <LicenseInput type="text" value={license.licensePublisher} readOnly />
+                </LicenseGroup>
+                <LicenseGroup>
+                  <Label>발행일</Label>
+                  <LicenseInput type="date" value={license.licenseDate} readOnly />
+                </LicenseGroup>
+              </LicenseCard>
+            </>
+          ))}
         </ContentWrapper2>
 
         <HireBottom>
@@ -116,26 +208,26 @@ function ResumeDetail() {
           <ContentWrapper1>
             <HireContent>
               <Label>제목</Label>
-              <Input value={'지원합니다'} readOnly />
+              <Input value={resumeData?.resumeTitle || ''} readOnly />
 
               <Label>내용</Label>
-              <Content value={'지원합니다'} readOnly />
+              <Content value={resumeData?.resumeContent || ''} readOnly />
 
               <RadioGroup>
                 <RadioContainer>
                   <Label>숙식 가능</Label>
                   <RadioWrapper>
-                    <input type="radio" value="Y" checked readOnly />
+                    <input type="radio" value="Y" checked={resumeData?.careStatus === 'Y'} readOnly />
                   </RadioWrapper>
                   <Label>숙식 불가</Label>
                   <RadioWrapper>
-                    <input type="radio" value="N" readOnly />
+                    <input type="radio" value="N" checked={resumeData?.careStatus === 'N'} readOnly />
                   </RadioWrapper>
                 </RadioContainer>
                 <AccountGroup>
                   <InputGroup>
                     <Label>희망 금액</Label>
-                    <Input value={'12000'} readOnly />
+                    <Input value={resumeData?.account || ''} readOnly />
                   </InputGroup>
                 </AccountGroup>
               </RadioGroup>
@@ -144,10 +236,35 @@ function ResumeDetail() {
         )}
 
         {activeTab === 'review' && (
-          <ContentWrapper1>
-            리뷰 내용입니다 (예: 별점, 텍스트 등)
+          <>
+            <ContentWrapper1>
+              <RecivedReviewsGridContainer>
+                {reviews.slice(offset, offset + ITEMS_PER_PAGE).map((review) => (
+                  <Card key={review.reviewNo}>
+                    <CardTopContent>
+                      <CardImage src={review.profileImage} />
+                      <CardTextGroup>
+                        <CardTitle>{review.userName} 돌봄대상자</CardTitle>
+                        <CardText>
+                          나이 {review.age}세({review.gender === 'male' ? '남' : '여'})
+                        </CardText>
+                      </CardTextGroup>
+                    </CardTopContent>
+                    <CardMidBottomContent>
+                      <ReviewTextBox>{review.reviewContent}</ReviewTextBox>
+                      <ReviewFooter>
+                        <ReviewScore>
+                          평점 <strong>{review.score.toFixed(1)}</strong>
+                        </ReviewScore>
+                        <ReviewDate>작성일 {review.createDate}</ReviewDate>
+                      </ReviewFooter>
+                    </CardMidBottomContent>
+                  </Card>
+                ))}
+              </RecivedReviewsGridContainer>
+            </ContentWrapper1>
             <Paging></Paging>
-          </ContentWrapper1>
+          </>
         )}
 
         <ButtonGroup>
@@ -360,7 +477,7 @@ const ButtonGroup = styled.div`
 
 const BackButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -369,7 +486,7 @@ const BackButton = styled.button`
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;
@@ -386,17 +503,13 @@ const LicenseInput = styled(Input)``;
 
 //기존
 const ContentWrapper2 = styled.div`
-  display: flex;
-  flex-direction: column; /* 작은 화면에서 세로로 쌓이도록 */
   max-width: 800px;
   width: 100%;
   margin: 0 auto;
-  ${media.md`
-
-flex-direction: row; 
-gap: ${({ theme }) => theme.spacing[5]};
-padding : ${({ theme }) => theme.spacing[3]};
-`}
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing[3]};
+  padding: ${({ theme }) => theme.spacing[3]};
 `;
 
 //변경(contentWrapper2 -> gridWrapper)인혜작성
@@ -434,41 +547,15 @@ const RadioContainer = styled.div`
   align-items: center;
 `;
 
-const LicenseAdd = styled.button`
+const LicenseCard = styled.div`
   display: flex;
-  border-radius: 4px;
-  align-items: center;
-  margin-top: ${({ theme }) => theme.spacing[2]};
-  justify-content: center;
-  background-color: ${({ theme }) => theme.colors.gray[5]};
+  width: 100%;
 
-  color: black;
-
-  // 인혜 작성(반응형)
-  ${media.lg`
-
-span {
-width: 50px;
-}
-padding: 0;
-background-color:white; 
-margin-top: ${({ theme }) => theme.spacing[6]};
-`}
-`;
-
-const LicenseDelete = styled.button`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  span {
-    width: 50px;
-  }
-  padding: 0;
-  margin-top: ${({ theme }) => theme.spacing[6]};
+  gap: ${({ theme }) => theme.spacing[5]};
 `;
 const ChatButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -484,16 +571,19 @@ const ChatButton = styled.button`
   }
 `;
 
-const TabsWrapper = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.xl};
-  margin: ${({ theme }) => theme.spacing[3]} 0 ${({ theme }) => theme.spacing[5]};
-`;
+const RecivedReviewsGridContainer = styled(GridContainer)`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  width: 85%;
+  gap: ${({ theme }) => theme.spacing[5]};
 
-const Tab = styled.span`
-  font-weight: ${({ active, theme }) => (active ? theme.fontWeights.bold : theme.fontWeights.regular)};
-  color: ${({ active, theme }) => (active ? theme.colors.black1 : theme.colors.gray[3])};
-  cursor: pointer;
-  margin: 0 ${({ theme }) => theme.spacing[1]};
+  ${media.md`
+    grid-template-columns: repeat(2, 1fr);
+  `}
+
+  ${media.lg`
+    grid-template-columns: repeat(2, 1fr);
+  `}
 `;
 
 export default ResumeDetail;

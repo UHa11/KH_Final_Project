@@ -10,16 +10,8 @@ import { FaPlus } from 'react-icons/fa6';
 import { useResumeForm } from '../hooks/useResumeForm';
 
 const ResumeRegistration = () => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    licenseList,
-    handleLicenseChange,
-    user,
-  } = useResumeForm();
-
-
+  const { register, handleSubmit, errors, licenseList, handleLicenseChange, user } = useResumeForm();
+  console.log(user);
   return (
     <HireRegistSection>
       <HireContainer>
@@ -330,7 +322,7 @@ const ButtonGroup = styled.div`
 
 const BackButton = styled.button`
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   width: 25%;
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
@@ -339,7 +331,7 @@ const BackButton = styled.button`
 const SubmitButton1 = styled(SubmitButton)`
   width: 65%;
   border: 1px solid ${({ theme, $error }) => ($error ? theme.colors.error : theme.colors.gray[5])};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
   color: white;
@@ -409,7 +401,7 @@ const LicenseAdd = styled.button`
   margin-top: ${({ theme }) => theme.spacing[2]};
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.gray[5]};
-
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   color: black;
 
   // 인혜 작성(반응형)
@@ -428,6 +420,7 @@ const LicenseDelete = styled.button`
   display: flex;
   gap: 10px;
   align-items: center;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
   span {
     width: 50px;
   }

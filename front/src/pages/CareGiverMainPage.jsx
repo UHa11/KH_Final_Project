@@ -8,6 +8,7 @@ import { BiSolidPhoneCall } from 'react-icons/bi';
 import { hiringService } from '../api/hiring';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { MainMoveButton } from '../styles/common/Button';
 
 const CareGiverMainPage = () => {
   const [jobOpeningList, setJobOpeningList] = useState([]);
@@ -89,7 +90,7 @@ const CareGiverMainPage = () => {
                   <CardRegion>
                     <span>지역</span> {user.patAddress}
                   </CardRegion>
-                  <CardButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</CardButton>
+                  <MainMoveButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</MainMoveButton>
                 </CardBottomContent>
               </Card>
             ))}
@@ -122,7 +123,7 @@ const CareGiverMainPage = () => {
                   <CardRegion>
                     <span>지역</span> {user.patAddress}
                   </CardRegion>
-                  <CardButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</CardButton>
+                  <MainMoveButton onClick={() => navigate(`/hireDetail/${user.hiringNo}`)}>상세보기</MainMoveButton>
                 </CardBottomContent>
               </Card>
             ))}
@@ -366,17 +367,6 @@ export const CardRegion = styled.span`
     color: ${({ theme }) => theme.colors.gray[3]};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
-`;
-
-// 버튼
-export const CardButton = styled.button`
-  align-self: flex-end;
-  padding: ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: ${({ theme }) => theme.colors.white};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  cursor: pointer;
 `;
 
 // ************* 하단(숙식 제공 돌봄 대상자) 섹션 *************

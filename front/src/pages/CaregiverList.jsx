@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Section } from '../styles/common/Container';
 import styled from 'styled-components';
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage from '../assets/profileImg/img_간병인.png'; // 프로필 이미지 경로
 import { media } from '../styles/MediaQueries';
 import SearchBar from '../components/SearchBar';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { ClipLoader } from 'react-spinners';
 import { jobSeekingService } from '../api/jobSeeking';
 import { useNavigate } from 'react-router-dom';
+import Paging from '../components/Paging';
 
 const CaregiverList = () => {
   const [caregiverLists, setCaregiverLists] = useState([]);
@@ -203,7 +204,7 @@ const CaregiverList = () => {
                   </AccuontText>
                 </LocationWage>
                 <USERINFO1>
-                  {resume.licesnse && <AccommodationInfo>자격증 보유</AccommodationInfo>}
+                  {resume.licenses && <AccommodationInfo>자격증 보유</AccommodationInfo>}
                   {resume.careStatus ? (
                     <AccommodationInfo>상주 간병 O</AccommodationInfo>
                   ) : (
@@ -213,6 +214,7 @@ const CaregiverList = () => {
               </CardFooter>
             </HireListCard>
           ))}
+          <Paging></Paging>
         </HireListSection>
       )}
     </>

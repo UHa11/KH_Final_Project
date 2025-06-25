@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Title, AuthContainer } from '../styles/Auth.styles';
-import { SubmitButton, ButtonText } from '../styles/common/Button';
+import { SubmitButton, ButtonText, MainMoveButton, MainSubmitButton } from '../styles/common/Button';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../store/userStore';
@@ -22,7 +22,6 @@ const Patient = () => {
 
       try {
         const patientsList = await patientService.getPatients(user.userNo);
-
         setUserpatients(patientsList);
       } catch (err) {
         console.error(err);
@@ -36,9 +35,7 @@ const Patient = () => {
       <AuthContainer>
         <Head>
           <Title>돌봄 대상자 목록</Title>
-          <RegistrationButton>
-            <ButtonText onClick={() => navigate('/guardian/patientregisteration')}>등록</ButtonText>
-          </RegistrationButton>
+          <MainSubmitBtn onClick={() => navigate('/guardian/patientregisteration')}>등록</MainSubmitBtn>
         </Head>
 
         <CardWrap>
@@ -61,12 +58,8 @@ const Patient = () => {
               </ProfileDiv>
 
               <ButtonDiv>
-                <SubmitButton1 onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>
-                  <ButtonText>관리</ButtonText>
-                </SubmitButton1>
-                <SubmitButton1 onClick={() => navigate(`/report/${pat.id}`, 1)}>
-                  <ButtonText>일지</ButtonText>
-                </SubmitButton1>
+                <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>관리</MainMoveBtn>
+                <MainMoveBtn onClick={() => navigate(`/report/${pat.id}`, 1)}>일지</MainMoveBtn>
               </ButtonDiv>
             </Card>
           ))}
@@ -95,11 +88,9 @@ const Head = styled.div`
   align-items: center;
 `;
 
-const RegistrationButton = styled(SubmitButton)`
-  height: fit-content;
-  width: 120px;
+const MainMoveBtn = styled(MainMoveButton)`
+  width: 100px;
 `;
-
 const Card = styled.div`
   max-height: fit-content;
   box-shadow: ${({ theme }) => theme.shadows.base};
@@ -132,6 +123,7 @@ const ButtonDiv = styled.div`
   margin: ${({ theme }) => theme.spacing[5]};
   gap: ${({ theme }) => theme.spacing[4]};
 `;
-const SubmitButton1 = styled(SubmitButton)`
+
+const MainSubmitBtn = styled(MainSubmitButton)`
   width: 120px;
 `;

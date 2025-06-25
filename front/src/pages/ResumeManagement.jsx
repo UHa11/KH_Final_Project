@@ -60,7 +60,7 @@ const ResumeManagement = () => {
               </ProfileDiv>
 
               <ButtonDiv>
-                <SubmitButton1 onClick={() => navigate(`/myresume/${resume.resumeNo}`)}>
+                <SubmitButton1 onClick={() => navigate(`/caregiver/myresume/${resume.resumeNo}`)}>
                   <ButtonText>이력서 상세</ButtonText>
                 </SubmitButton1>
               </ButtonDiv>

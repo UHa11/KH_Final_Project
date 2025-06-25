@@ -21,6 +21,8 @@ export const patientService = {
 
   //환자등록
   postNewPatient: async (data) => {
+    console.log(data);
+
     try {
       await api.post(API_ENDPOINTS.PATIENT.BASE, camelToSnake(data));
     } catch (error) {
@@ -30,11 +32,11 @@ export const patientService = {
   },
 
   //환자번호로 정보 가져오기
-  getPatientId: async (id) => {
+  getPatientId: async (patNo) => {
     try {
-      const { data } = await api.get(API_ENDPOINTS.PATIENT.PATDETAIL(id));
+      const { data } = await api.get(API_ENDPOINTS.PATIENT.PATDETAIL(patNo));
 
-      return snakeToCamel(data[0]);
+      return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '환자목록을 불러오는데 실패했습니다.';
@@ -47,7 +49,7 @@ export const patientService = {
   updatePatinet: async (patNo, data) => {
     //put 요청을 보낼때 id로 입력해줘야 json.db가 인식함 가공은 페이지에서 하고 변수는 id로 넘겨주자
     try {
-      await api.put(API_ENDPOINTS.PATIENT.PUT(Number(patNo)), camelToSnake(data));
+      await api.fetch(API_ENDPOINTS.PATIENT.FETCH(Number(patNo)), camelToSnake(data));
     } catch (error) {
       console.error('돌봄대상자 수정 실패:', error);
       throw new Error('돌봄대상자 수정하는데 실패했습니다.');

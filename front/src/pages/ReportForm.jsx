@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Section } from '../styles/common/Container';
 import { ButtonText, SubmitButton } from '../styles/common/Button';
-import { useParams, useLocation, Navigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { reportService } from '../api/report';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
@@ -13,7 +13,7 @@ const ReportForm = () => {
   const [count, setCount] = useState(1);
   const [error, setError] = useState(null);
   const { user } = useUserStore();
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     careGiverNo: user.userNo,
     patNo: patNo,
@@ -38,7 +38,7 @@ const ReportForm = () => {
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
-      Navigate(`/report/${formData.patNo}`);
+      navigate(`/report/${formData.patNo}`);
     }
   };
 

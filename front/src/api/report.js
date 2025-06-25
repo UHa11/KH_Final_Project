@@ -22,35 +22,28 @@ export const reportService = {
         status: 'Y',
       };
 
-      // reportContent 초기화
-      let reportContent = '';
-
-      // sub_title과 content를 동적으로 병합
-      Object.keys(data).forEach((key) => {
-        const subTitleMatch = key.match(/^sub_title(\d+)$/);
-        if (subTitleMatch) {
-          const index = subTitleMatch[1];
-          const subTitle = data[`sub_title${index}`];
-          const content = data[`content${index}`];
-
-          if (subTitle && content) {
-            reportContent += `${subTitle}\n${content}\n\n`;
-          }
-        }
-      });
-
-      // trim하여 불필요한 줄바꿈 제거
-      reportInfo.reportContent = reportContent.trim();
-
-      // 불필요한 sub_title 및 content 필드 제거
-      Object.keys(data).forEach((key) => {
-        if (key.startsWith('sub_title') || key.startsWith('content')) {
-          delete reportInfo[key];
-        }
-      });
       console.log(reportInfo);
 
-      const { data } = await api.post(API_ENDPOINTS.REPORT.BASE, camelToSnake(reportInfo));
+      const createReportContent = (report) => {
+        // 필터링: subTitle 및 content와 관련된 키들만 추출
+        const subTitles = Object.entries(report).filter(([key]) => key.startsWith('subTitle'));
+        const contents = Object.entries(report).filter(([key]) => key.startsWith('content'));
+
+        // 정렬 및 조합
+        const reportContent = subTitles
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([, subTitleValue], i) => `${subTitleValue}\n${contents[i]?.[1] || ''}`)
+          .join('\n\n');
+
+        return { ...report, reportContent };
+      };
+
+      // 변환
+      const updatedReport = createReportContent(reportInfo);
+
+      console.log(updatedReport);
+
+      const { data } = await api.post(API_ENDPOINTS.REPORT.BASE, camelToSnake(updatedReport));
       return data;
     } catch (error) {
       if (error.response) {
@@ -73,6 +66,24 @@ export const reportService = {
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '일지수정에 실패했습니다.';
+        throw new Error(message);
+      }
+
+      throw new Error('서버 통신 불량');
+    }
+  },
+  removeReports: async (report) => {
+    try {
+      const reportInfo = {
+        ...report,
+        status: 'N',
+      };
+
+      const { data } = await api.patch(API_ENDPOINTS.REPORT.SEARCH(report.reportNo), camelToSnake(reportInfo));
+      return data;
+    } catch (error) {
+      if (error.response) {
+        const message = error.response?.data?.message || '일지삭제에 실패했습니다.';
         throw new Error(message);
       }
 

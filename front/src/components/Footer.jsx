@@ -6,56 +6,61 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <FooterContainer>
-      <FooterWrapper>
-        <FooterSection>
-          <Logo to="/">
-            <img src="/public/logo.png" />
-            {SITE_CONFIG.name}
-          </Logo>
-        </FooterSection>
+    <>
+      <FooterContainer>
+        <FooterWrapper>
+          <FooterSection>
+            <Logo to="/">
+              <img src="/public/logo.png" />
+              {SITE_CONFIG.name}
+            </Logo>
+          </FooterSection>
 
-        <FooterSection>
-          <FooterTitle>고객센터</FooterTitle>
-          <FooterContent>
-            <p>전화: {SITE_CONFIG.contact.phone}</p>
-            <p>이메일: {SITE_CONFIG.contact.email}</p>
-            <p>운영시간: {SITE_CONFIG.contact.runtime}</p>
-          </FooterContent>
-        </FooterSection>
+          <FooterSection>
+            <FooterTitle>고객센터</FooterTitle>
+            <FooterContent>
+              <p>전화: {SITE_CONFIG.contact.phone}</p>
+              <p>이메일: {SITE_CONFIG.contact.email}</p>
+              <p>운영시간: {SITE_CONFIG.contact.runtime}</p>
+            </FooterContent>
+          </FooterSection>
 
-        <FooterSection>
-          <FooterTitle>회사정보</FooterTitle>
-          <FooterContent>
-            <p>상호명: {SITE_CONFIG.name}</p>
-            <p>대표: {SITE_CONFIG.info.ceo}</p>
-            <p>사업자등록번호: {SITE_CONFIG.info.company_number}</p>
-          </FooterContent>
-        </FooterSection>
+          <FooterSection>
+            <FooterTitle>회사정보</FooterTitle>
+            <FooterContent>
+              <p>상호명: {SITE_CONFIG.name}</p>
+              <p>대표: {SITE_CONFIG.info.ceo}</p>
+              <p>사업자등록번호: {SITE_CONFIG.info.company_number}</p>
+            </FooterContent>
+          </FooterSection>
 
-        <FooterSection>
-          <FooterTitle>이용약관</FooterTitle>
-          <FooterContent>
-            <p>이용약관</p>
-            <p>개인정보처리방침</p>
-            <p>사업자정보확인</p>
-          </FooterContent>
-        </FooterSection>
-      </FooterWrapper>
-    </FooterContainer>
+          <FooterSection>
+            <FooterTitle>이용약관</FooterTitle>
+            <FooterContent>
+              <Link to="/terms-of-service">
+                <p>이용약관</p>
+              </Link>
+              <Link to="/privacy-policy">
+                <p>개인정보처리방침</p>
+              </Link>
+            </FooterContent>
+          </FooterSection>
+        </FooterWrapper>
+      </FooterContainer>
+      <Copy>Copyright © 2025 Dolbomi. All rights reserved.</Copy>
+    </>
   );
 };
 
 const FooterContainer = styled.footer`
-  min-height: 164px;
   background-color: ${({ theme }) => theme.colors.third};
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  margin: 0 auto;
+  padding: ${({ theme }) => theme.spacing[8]};
 
   ${media.md`
-    padding: ${({ theme }) => theme.spacing[8]};
     display : block;
   `}
 `;
@@ -94,7 +99,7 @@ const FooterTitle = styled.h3`
 
 const FooterContent = styled.div`
   display: none;
-
+  padding: ${({ theme }) => theme.spacing[1]};
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[2]};
   color: ${({ theme }) => theme.colors.gray[600]};
@@ -120,4 +125,11 @@ const Logo = styled(Link)`
   `}
 `;
 
+const Copy = styled.div`
+  background-color: ${({ theme }) => theme.colors.third};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: ${({ theme }) => theme.fontWeights.regular};
+  padding: ${({ theme }) => theme.spacing[5]};
+  box-shadow: 0 0 0.5px ${({ theme }) => theme.colors.gray[1]};
+`;
 export default Footer;

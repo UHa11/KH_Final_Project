@@ -11,6 +11,7 @@ const ReviewModal = ({ maxHearts = 5 }) => {
   const [rating, setRating] = useState('');
   const [hovered, setHovered] = useState(0); //마우스 호버된 별점
   const [error, setError] = useState(null);
+  
 
   const handleSubmit = async () => {
     try {

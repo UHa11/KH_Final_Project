@@ -3,7 +3,11 @@
 const { VITE_JSON_SERVER_URL, VITE_SPRING_URL, VITE_API_TIMEOUT = 5000, VITE_API_VERSION = 'v1' } = import.meta.env;
 
 export const API_CONFIG = {
-  BASE_URL: `${VITE_JSON_SERVER_URL}`, // Spring 들어가면 여기 변수만 VITE_SPRING_URL로 변경해야함
+  BASE_URL: `${VITE_SPRING_URL}`, // Spring 들어가면 여기 변수만 VITE_SPRING_URL로 변경해야함
+
+  // 회원가입 로그인 기능 추가하느라 url 변경함..
+  // BASE_URL: `${VITE_SPRING_URL}`,
+
   TIMEOUT: VITE_API_TIMEOUT,
   HEADERS: {
     'Content-Type': 'application/json',
@@ -25,12 +29,14 @@ export const API_ENDPOINTS = {
   USERS: {
     BASE: '/users',
 
-    PROFILE: (userId) => `/users?user_id=${userId}`,
+    CHECK_ID: 'users/check', //아이디 중복 검사
+    PROFILE: (userNo) => `/users?user_no=${userNo}`,
+    LOGIN: '/users/login', //실제에는 이렇게 해야함 아래는 JsonServer 사용시
 
-    // LOGIN: '/users/login' //실제에는 이렇게 해야함 아래는 JsonServer 사용시
-    LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
+    // LOGIN: (userId, userPwd) => `/users?user_id=${userId}&user_pwd=${userPwd}`,
     DETAIL: (userId) => `/users?user_id=${userId}`,
-    PROFILE_UPDATE: (userId) => `/users/${userId}`,
+    PROFILE_UPDATE: (userNo) => `/users/${userNo}`,
+    CAREPROFILE: (userNo) => `/users?user_no=${userNo}`,
   },
   REVIEWS: {
     BASE: '/reviews',
@@ -45,13 +51,14 @@ export const API_ENDPOINTS = {
     BASE: '/resume',
     DETAIL: (resumeNo) => `/resume?resume_no=${resumeNo}`,
     MYRESUME: (userNo) => `resume?user_no=${userNo}`,
+    UPDATE: (resumeNo) => `/resume/${resumeNo}`,
   },
 
   PATIENT: {
     BASE: '/patient',
     DETAIL: (guardianNo) => `/patient?guardian_no=${guardianNo}`,
-    PATDETAIL: (patNo) => `/patient?pat_no=${patNo}`,
-    PUT: (patNo) => `/patient/${patNo}`,
+    PATDETAIL: (patNo) => `/patient/${patNo}`,
+    FETCH: (patNo) => `/patient/${patNo}`,
     DELETE: (patNo) => `/patient/${patNo}`,
   },
 
@@ -66,12 +73,15 @@ export const API_ENDPOINTS = {
     SEARCH: (reportNo) => `/report/report_no=${reportNo}`,
   },
 
-  CAREGIVERPROPOSER: {
-    BASE: '/caregiverproposer',
-    LIST: (hiringNo) => `/caregiverproposer?hiring_no=${hiringNo}`,
+  PROPOSER: {
+    BASE: '/proposer',
+    LIST: (hiringNo) => `/proposer?hiring_no=${hiringNo}`,
+    CANCEL: (hiringNo, caregiverNo) => `/proposer/${hiringNo}/${caregiverNo}`,
   },
-  PATERPROPOSER: {
-    BASE: '/patproposer',
-    LIST: (resumeNo) => `/patproposer?resume_no=${resumeNo}`,
+
+  MATCHING: {
+    BASE: '/matching',
+    LIST: (patNo, status) => `/matching?pat_no=${patNo}&status=${status}`,
+    ENDLIST: (status) => `/matching?status=${status}`,
   },
 };

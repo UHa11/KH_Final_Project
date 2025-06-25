@@ -3,10 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { patientService } from '../api/patient';
 import useUserStore from '../store/userStore';
-
-
 
 //환자등록 폼의 유효성 검사 스키마
 const patientsSchema = yup.object().shape({
@@ -26,6 +23,8 @@ const patientsSchema = yup.object().shape({
 
   patGender: yup.string().oneOf(['M', 'F'], '성별을 선택해주세요').required('성별은 필수입니다.'),
 
+  patWeight: yup.number().typeError('몸무게는 숫자여야 합니다.'),
+  patHeight: yup.number().typeError('키는 숫자여야 합니다.'),
   phone: yup
     .string()
     .required('전화번호를 입력하세요.')
@@ -41,8 +40,6 @@ const patientsSchema = yup.object().shape({
 export const usepatientRegistrationForm = () => {
   const navigate = useNavigate();
   const { user } = useUserStore();
-
-
 
   //react-hook-form으로 폼 상태 초기화및 유효성 검사
   const {
@@ -60,10 +57,6 @@ export const usepatientRegistrationForm = () => {
       // 나머지 필드에 대한 기본값이 있다면 여기에 추가
     },
   });
-
-
-
-
 
   //컴포넌트에서 사용할 값들 반환
   return {
