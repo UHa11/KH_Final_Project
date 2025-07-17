@@ -34,18 +34,26 @@ const TermsOfService = () => {
           <ListItem>
             “회원”이라 함은 회원가입 절차를 완료한 자로서, 회사가 제공하는 서비스를 이용할 수 있는 자를 의미합니다.
           </ListItem>
-          <ListItem>알아서 뭐하게</ListItem>
-          <ListItem>알아서 뭐하게</ListItem>
-          <ListItem>알아서 뭐하게</ListItem>
+          <ListItem>“간병인”이라 함은 돌보미 서비스를 통해 간병 서비스를 제공하는 자를 의미합니다.</ListItem>
+          <ListItem>“보호자”라 함은 돌봄이 필요한 대상자를 대신하여 서비스를 이용하는 자를 의미합니다.</ListItem>
+          <ListItem>“이용계약”이라 함은 회원과 회사 간에 서비스를 이용하기 위하여 체결하는 계약을 의미합니다.</ListItem>
         </List>
         <Bold>제3조 (약관의 명시와 개정)</Bold>
         <List>
-          <ListItem></ListItem>
-          <ListItem></ListItem>
-          <ListItem></ListItem>
-          <ListItem></ListItem>
-          <ListItem></ListItem>
-          <ListItem></ListItem>
+          <ListItem>
+            회사는 본 약관의 내용을 회원이 쉽게 알 수 있도록 서비스 초기 화면 또는 별도의 연결 화면에 게시합니다.
+          </ListItem>
+          <ListItem>회사는 관련 법령을 준수하며, 필요한 경우 본 약관을 개정할 수 있습니다.</ListItem>
+          <ListItem>
+            약관이 개정될 경우, 회사는 개정 사항과 시행일을 명시하여 이메일, 문자 등의 방법으로 회원에게 알립니다.
+          </ListItem>
+          <ListItem>
+            회원이 개정된 약관에 동의하지 않을 경우, 서비스 이용을 중단하고 회원 탈퇴를 할 수 있습니다.
+          </ListItem>
+          <ListItem>
+            개정된 약관은 공지한 시행일로부터 효력을 발생하며, 시행일 이후 서비스 이용 시 약관에 동의한 것으로
+            간주됩니다.
+          </ListItem>
         </List>
       </LegalContainer>
     </LegalWrap>

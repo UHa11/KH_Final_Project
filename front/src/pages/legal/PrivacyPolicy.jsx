@@ -32,9 +32,16 @@ const PrivacyPolicy = () => {
         <Bold>회사는 회원가입, 상담, 매칭 신청 등을 위해 아래와 같은 개인정보를 수집하고 있습니다.</Bold>
         <Bold>수집항목 : </Bold>
         <List>
-          <ListItem>알아서 뭐하게</ListItem>
-          <ListItem>알아서 뭐하게</ListItem>
-          <ListItem>알아서 뭐하게</ListItem>
+          <ListItem>
+            이름, 연락처(휴대전화번호, 이메일), 생년월일, 성별, 주소, 아이디 및 비밀번호 서비스 이용 기록 및 접속 로그
+          </ListItem>
+          <ListItem>
+            프로필 사진, 자격증 및 경력 정보 간병 관련 희망 조건(지역, 희망 업무 등) 기타 회원이 자발적으로 제공하는
+            정보
+          </ListItem>
+          <ListItem>
+            IP 주소 쿠키, 접속 로그 및 방문 기록 서비스 이용 중 생성되는 정보(이용 기록, 접속 시간 등)
+          </ListItem>
         </List>
       </LegalContainer>
     </LegalWrap>
