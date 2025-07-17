@@ -58,7 +58,6 @@ export const reportService = {
         updateDate: new Date().toISOString(),
       };
 
-      console.log('요청 : ' + reportInfo);
       const { data } = await api.patch(API_ENDPOINTS.REPORT.BASE, camelToSnake(reportInfo));
 
       return data;

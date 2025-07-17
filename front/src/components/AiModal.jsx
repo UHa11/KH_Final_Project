@@ -53,8 +53,6 @@ const AiModal = () => {
       // patientService.getPatientId는 비동기 함수로 가정
       const patient = await patientService.getPatientId(patNo);
 
-      console.log(patient);
-
       setPatient(patient);
     } catch (error) {
       console.error(error);
@@ -69,7 +67,6 @@ const AiModal = () => {
 
     try {
       const res = await aiService.getAiResponse(patNo);
-      console.log(res);
       setAiResponse(res);
     } catch (error) {
       console.error(error);

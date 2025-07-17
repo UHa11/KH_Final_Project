@@ -4,6 +4,10 @@ import com.kh.dolbomi.domain.Notification;
 import com.kh.dolbomi.enums.StatusEnum;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface NotificationRepositoryV2 extends JpaRepository<Notification, Long> {
     List<Notification> findByRecipient_UserNoOrderByNotificationCreateDateDesc(Long userNo);
@@ -14,6 +18,9 @@ public interface NotificationRepositoryV2 extends JpaRepository<Notification, Lo
     //읽음으로 상태 변경
     List<Notification> findByRecipientUserNoAndIsRead(Long userNo, StatusEnum.IS_READ isRead);
 
-    //1달된 알림은 자동 삭제
-//    void deleteByNotificationCreateDateBefore(LocalDateTime dateTime);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Notification n WHERE n.recipient.userNo = :userNo")
+    void deleteByRecipient_UserNo(@Param("userNo") Long userNo);
+
 }

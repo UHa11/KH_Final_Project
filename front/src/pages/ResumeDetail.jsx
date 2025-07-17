@@ -64,7 +64,6 @@ function ResumeDetail() {
         if (hiringNo) {
           // 2) 백엔드 API로 해당 hiringNo 구인글 작성자가 로그인 유저인지 체크
           const result = await proposerService.getHiringOwnerUserNo(Number(hiringNo));
-          console.log(result);
           const { ownerUserNo, hiringStatus } = result;
 
           if (user?.userNo === ownerUserNo) {
@@ -120,7 +119,7 @@ function ResumeDetail() {
     try {
       await proposerService.acceptMatching({ resumeNo, hiringNo });
       toast.success('매칭이 수락되었습니다!');
-      navigate('/'); // 혹은 다른 경로
+      navigate(`/guardian/careGiverSupportBorad/${hiringNo}`);
     } catch (error) {
       console.error(error);
       toast.error('매칭 수락 중 오류가 발생했습니다.');

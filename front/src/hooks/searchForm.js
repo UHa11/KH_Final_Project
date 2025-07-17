@@ -7,7 +7,7 @@ export const searchForm = () => {
 
   // 날짜 검색 함수
   const getSearchDateList =  async (patNo, page = 1 , size = 5, startDate, endDate) => {
-    console.log("확인", startDate)
+   
 
     try {
       const  data  = await matchingService.getSearchingList(patNo, startDate, endDate, page - 1, size);

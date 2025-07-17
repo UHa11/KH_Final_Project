@@ -7,8 +7,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +40,21 @@ public class NotificationController {
     public ResponseEntity<Void> markNotificationsAsRead(@RequestParam("user_no") Long userNo) {
         notificationService.markAllNotificationsAsRead(userNo);
         return ResponseEntity.ok().build();
+    }
+
+    //알림 전체 삭제
+    @DeleteMapping("/delete-all")
+    public ResponseEntity<Void> deleteAllNotifications(@RequestParam("user_no") Long userNo) {
+        notificationService.deleteAllByUserNo(userNo);
+        return ResponseEntity.noContent().build(); // 삭제는 json 바디가 필요 없기 때문에 noContent 사용
+    }
+
+    //알림 개별 삭제
+    // 알림 개별 삭제
+    @DeleteMapping("/{notificationNo}")
+    public ResponseEntity<Void> deleteNotification(@PathVariable Long notificationNo) {
+        notificationService.deleteNotification(notificationNo);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 
 }

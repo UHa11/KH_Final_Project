@@ -23,6 +23,8 @@ export const matchingService = {
     try {
       const { data } = await api.get(API_ENDPOINTS.MATCHING.PATLIST(cargiverNo, status));
 
+      console.log(data)
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -38,7 +40,6 @@ export const matchingService = {
   getMatchingChangeStatus: async (matNo, status) => {
     try {
       const res = await api.patch(API_ENDPOINTS.MATCHING.PATCH(matNo, status));
-      console.log(res);
     } catch (error) {
       if (error.response) {
         const message = error.response?.data?.message || '매칭목록을 불러오는데 실패했습니다.';
@@ -95,7 +96,6 @@ export const matchingService = {
           size,
         },
       });
-      console.log;
       ongamepadconnected;
       return snakeToCamel(data);
     } catch (error) {

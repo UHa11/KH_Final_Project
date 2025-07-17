@@ -32,7 +32,6 @@ const UpdateCommuBoardForm = () => {
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCommunityDetail(boardNo);
-        console.log(community);
         setData(community);
         reset({
           boardTitle: community.boardTitle,
@@ -94,9 +93,8 @@ const UpdateCommuBoardForm = () => {
         image_names,
         deleted_file_nos: deletedFileNos,
       };
-      console.log(boardData);
+
       const response = await commuService.updateCommunity(boardData);
-      console.log(response);
 
       toast.success('수정되었습니다');
       navigate(-1);

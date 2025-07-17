@@ -23,7 +23,6 @@ const Patient = () => {
 
       try {
         const patientsList = await patientService.getPatients(user.userNo);
-        console.log(patientsList);
         setUserpatients(patientsList);
       } catch (err) {
         console.error(err);

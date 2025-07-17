@@ -38,7 +38,6 @@ const CommunityDetail = () => {
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCommunityDetail(boardNo);
-        console.log(community);
 
         setCommunityDetail(community);
       } catch (error) {
@@ -76,7 +75,6 @@ const CommunityDetail = () => {
       alert('댓글을 입력해주세요.');
       return;
     }
-    console.log(userNo);
     try {
       setIsSubmitting(true);
       const replyData = {
@@ -100,8 +98,6 @@ const CommunityDetail = () => {
     }
   };
   const handleUpdateReply = async (data) => {
-    console.log('작성 버튼 클릭');
-
     try {
       const replyData = {
         reply_no: data,

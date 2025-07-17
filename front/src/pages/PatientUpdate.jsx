@@ -27,7 +27,6 @@ import PostcodeSearch from '../components/PostcodeSearch';
 import profileImg from '../assets/profileImg/img_환자소.png';
 import { getUploadUrl, uploadFileToS3, completeUpload } from '../api/fileApi';
 import { HiMiniPencilSquare } from 'react-icons/hi2';
-import { matchingService } from '../api/matching';
 
 const PatientUpdate = () => {
   const { user, userStatus } = useUserStore();
@@ -68,7 +67,6 @@ const PatientUpdate = () => {
     const fetchPatient = async () => {
       try {
         const onePatient = await patientService.getPatientId(patNo);
-        console.log('환자 정보:', onePatient);
         setPatient(onePatient);
         setTags(onePatient.diseaseTags || []);
         setValue('patName', onePatient.patName || '');
@@ -108,11 +106,9 @@ const PatientUpdate = () => {
       if (selectedFile) {
         const { presignedUrl, changeName } = await getUploadUrl(selectedFile.name, selectedFile.type, 'patient/');
         await uploadFileToS3(presignedUrl, selectedFile);
-        console.log('Presigned URL 응답:', { presignedUrl, changeName });
         imagePath = changeName;
       }
 
-      console.log(imagePath);
       await patientService.updatePatient(patNo, {
         ...patient,
         ...data,
@@ -138,11 +134,6 @@ const PatientUpdate = () => {
     };
 
     try {
-      const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
-      if(careGiverList.length > 0){
-        alert("매칭중 상태에서는 환자를 삭제할 수 없습니다.")
-        return;
-      }
       await patientService.updatePatient(patNo, updatedPatient);
       toast.success('돌봄대상자 삭제완료!');
       navigate('/guardian/patient');

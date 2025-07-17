@@ -13,7 +13,7 @@ import { RiAlarmWarningLine } from 'react-icons/ri';
 import { matchingService } from '../api/matching';
 import { useLocation } from 'react-router-dom';
 import chatImage from '../assets/icons/icon_채팅아이콘.png'; // 채팅 이미지 경로
-import profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
+import profileImage from '../assets/profileImg/img_간병인.png'; // 프로필 이미지 경로
 const CareGiverProfile = () => {
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -102,7 +102,6 @@ const CareGiverProfile = () => {
     if (!confirmed) return;
 
     try {
-      console.log(matNo);
       await matchingService.getMatchingChangeStatus(Number(matNo), 'N');
       navigate('/guardian/matchpage');
     } catch (error) {
@@ -220,8 +219,6 @@ const ProfileCard = styled.div`
   gap: ${({ theme }) => theme.spacing[8]};
   justify-content: flex-start;
   align-items: center;
-
-
 `;
 
 const ProfileInfo = styled.div`

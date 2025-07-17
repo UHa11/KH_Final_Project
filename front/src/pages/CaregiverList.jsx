@@ -97,7 +97,7 @@ const CaregiverList = () => {
       setError(null);
 
       const caregiverList = await jobSeekingService.getCaregiverList({ page: pageNumber, size: pageSize, searchData });
-      console.log('간병인 Response:', caregiverList);
+
       setCaregiverLists(caregiverList); // 이게 구조를 보여줌
       if (caregiverList.totalElements === 0) {
         setCaregiverLists([]);
@@ -417,11 +417,7 @@ const Item = styled.div`
 const RegionDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
-<<<<<<< HEAD
-  justify-content: center;
-=======
   align-items: center;
->>>>>>> c20c21ed558b4b32187e3cb0167b23c76d238bc2
 `;
 
 const RegionLabel = styled.label`

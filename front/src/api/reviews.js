@@ -58,9 +58,9 @@ export const reviewService = {
         reviewContent: inputValue,
         score: Number(rating),
       };
-      console.log('전송 전 reviewData:', reviewData);
+      
       const snakeCaseData = camelToSnake(reviewData);
-      console.log('보내는 리뷰 데이터:', snakeCaseData);
+  
       const { data } = await api.post(API_ENDPOINTS.REVIEWS.BASE, snakeCaseData);
 
       return data;
@@ -78,7 +78,7 @@ export const reviewService = {
   getResumeDetailReviews: async (currentPage, resumeNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.REVIEWS.DETAIL(currentPage, resumeNo));
-      console.log(data);
+    
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -87,21 +87,5 @@ export const reviewService = {
       }
     }
     throw new Error('서버 통신 불량');
-  },
-
-  // 내가 쓴 리뷰 페이지 - 리뷰 삭제
-  deleteReview: async (reviewNo) => {
-    try {
-      const { data } = await api.patch(API_ENDPOINTS.REVIEWS.DELETE(reviewNo));
-      console.log(data);
-      return data;
-    } catch (error) {
-      if (error.response) {
-        const message = error.response?.data?.message || '리뷰를 삭제하는데 실패했습니다.';
-        throw new Error(message);
-      }
-
-      throw new Error('서버 통신 불량');
-    }
   },
 };

@@ -71,7 +71,7 @@ const MatchToPatient = () => {
     }
     try {
       const patientList = await matchingService.getMatchingPatient(user.userNo, 'Y');
-      console.log(patientList);
+     
       patientList.length === 0 ? setPatientList([]) : setPatientList(patientList);
     } catch (err) {
       console.error(err);
@@ -80,7 +80,7 @@ const MatchToPatient = () => {
 
   const handleEndMatching = async (matNo) => {
     try {
-      console.log(matNo);
+ 
       const confirmDelete = window.confirm('종료된 매칭으로 이동됩니다. 정말로 간병을 종료하시겠습니까?');
 
       if (!confirmDelete) return;
@@ -100,7 +100,7 @@ const MatchToPatient = () => {
 
       try {
         const res = await matchingService.findMatchedPatients(user.userNo, 'N', endedCurrentPage - 1);
-        console.log(res);
+      
         setEndedPatientList(res.content);
         setEndedCurrentPage(res.currentPage + 1); // ← 여기가 핵심
         setEndedTotalPage(res.totalPage); // ← 주의: API에선 totalPage로 오네요
@@ -251,7 +251,7 @@ const HeadSection = styled(Section)`
   display: flex;
   height: auto;
   justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]};
+  padding: ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[4]} ${({ theme }) => theme.spacing[2]} ${({ theme }) => theme.spacing[4]};
   align-items: flex-start;
   ${media.md` /* 768px 이상 (태블릿/데스크톱) */
     padding: 40px 16px 10px 16px;

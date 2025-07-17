@@ -84,7 +84,7 @@ const HireDetail = () => {
           caregiverNo: Number(user.userNo),
           hiringNo: Number(hiringNo),
         });
-        console.log(result);
+    
         setApplicationStatus(result);
       } catch (error) {
         console.error(error + ': 신청확인실패 ');
@@ -129,14 +129,14 @@ const HireDetail = () => {
     const init = async () => {
       try {
         const data = await hiringService.getHirngById(Number(hiringNo), user?.userNo);
-        console.log(data);
+
         setJobOpening(data);
         if (data.applied && typeof data.applied === 'object') {
           setApplicationStatus(data.applied); // { isMatched: true, isProposed: true }
         }
 
         setRecruitmentClosed(data.hiringStatus === 'N');
-        setValue('hiringStatus', data.hiringStatus );
+        setValue('hiringStatus', data.hiringStatus);
         setValue('hiringTitle', data.hiringTitle);
         setValue('hiringContent', data.hiringContent);
         setValue('account', data.account);

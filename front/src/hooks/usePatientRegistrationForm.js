@@ -90,8 +90,7 @@ export const usepatientRegistrationForm = (user) => {
 
   const onSubmit = async (formData) => {
     try {
-      console.log('test', selectedFile);
-
+      
       // 이미지가 선택되었는지 체크
       const imageChanged = !!selectedFile;
       let uploadedImageName = "";
@@ -105,8 +104,6 @@ export const usepatientRegistrationForm = (user) => {
           'patient/' // 업로드 경로
         );
 
-        console.log('Presigned URL 응답:', { presignedUrl, changeName });
-        
         // 2. S3 직접 업로드
         await uploadFileToS3(presignedUrl, selectedFile);
 
@@ -132,23 +129,6 @@ export const usepatientRegistrationForm = (user) => {
       console.error('돌봄대상자 등록 에러 : ', error);
     }
   };
-
-  // const handleUpload = async (file) => {
-  //   try {
-  //     console.log('확인', file.type);
-  //     // 1. Presigned URL 발급 (path와 fileName 분리해서 전송)
-
-  //     const { presignedUrl, changeName } = await getUploadUrl(file.name, file.type, 'patient/');
-  //     console.log('확인', presignedUrl);
-  //     // 2. S3에 파일 업로드
-  //     await uploadFileToS3(presignedUrl, file);
-
-  //     setPreviewUrl(CLOUDFRONT_URL + changeName);
-  //     console.log(previewUrl);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   //컴포넌트에서 사용할 값들 반환
   return {

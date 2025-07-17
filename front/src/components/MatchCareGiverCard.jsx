@@ -34,7 +34,6 @@ const MatchCareGiverCard = ({
   endedTotalPage,
   handleEndedPageChange,
 }) => {
-  console.log('확인 no', selectedPatNo);
   let currentList;
 
   if (activeTab === 'matching') {
@@ -107,7 +106,6 @@ const MatchCareGiverCard = ({
                   <ReportButton
                     style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
                     onClick={() => {
-                      console.log('selected care:', care);
                       setSelectedCaregiver(care); // 선택한 매칭 정보 저장
                       setShowReviewModal(true); // 모달 표시
                     }}
@@ -135,7 +133,6 @@ export default MatchCareGiverCard;
 
 const EmptyMessage = styled.p`
   width: 100%;
-  height: 140px;
   text-align: center;
   color: ${({ theme }) => theme.colors.gray[3]};
   font-size: ${({ theme }) => theme.fontSizes.base};
@@ -144,6 +141,7 @@ const EmptyMessage = styled.p`
 
 const Div = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
 `;
 

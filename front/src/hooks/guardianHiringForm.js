@@ -12,12 +12,17 @@ const guardianSchema = yup.object().shape({
   hiringTitle: yup.string().required('제목을 입력해주세요'),
   hiringContent: yup.string().required('내용을 입력해주세요'),
   account: yup.number().typeError('숫자로 입력해주세요').required('희망 시급을 입력해주세요'),
-  careStatus: yup.string().oneOf(['Y', 'N'], '숙식 여부를 선택해주세요'),
-  startDate: yup.date().min(today, '오늘 이후 날짜만 선택할 수 있습니다.').required('시작일을 입력해주세요'),
+  careStatus: yup.string().required('숙식 여부를 선택해주세요').oneOf(['Y', 'N'], '숙식 여부를 선택해주세요'),
+  startDate: yup
+    .date()
+    .typeError('시작일을 선택해주세요')
+    .min(today, '오늘 이후 날짜만 선택할 수 있습니다.')
+    .required('시작일을 선택해주세요'),
   endDate: yup
     .date()
+    .typeError('종료일을 선택해주세요')
     .min(yup.ref('startDate'), '종료일은 시작일보다 빠를 수 없습니다')
-    .required('종료일을 입력해주세요'),
+    .required('종료일을 선택해주세요'),
   maxApplicants: yup
     .number()
     .typeError('숫자를 입력해주세요')
@@ -47,6 +52,7 @@ export const guardianHiringForm = () => {
     reset,
     watch,
     // 변경
-    errors, isSubmitting , //유효성 에러및 제출중 상태
+    errors,
+    isSubmitting, //유효성 에러및 제출중 상태
   };
 };

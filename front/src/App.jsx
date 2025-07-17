@@ -22,7 +22,6 @@ import ResumeRegistration from './pages/ResumeRegistration';
 import ResumeDetail from './pages/ResumeDetail';
 import GuardianMainPage from './pages/GuardianMainPage';
 import CareGiverMainPage from './pages/CareGiverMainPage';
-import { useEffect } from 'react';
 
 import ReportMain from './pages/ReportMain';
 import ReviewModal from './components/ReviewModal';
@@ -58,11 +57,10 @@ import UpdateCommuBoardForm from './pages/community/UpdateCommuBoardForm';
 import PatientCardGroup from './components/PatientCardGroup';
 import AiModal from './components/AiModal';
 import MatchMainPage from './pages/MatchMainPage';
-
 import ChatHome from './pages/chat/ChatHome';
 import AiChat from './components/chat/AiChat';
-
 import usePreventWheelOnNumberInput from './hooks/usePreventWheelOnNumberInput';
+import MatchToCareGiver from './pages/MatchToCareGiver';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -136,8 +134,8 @@ function AppRoutes() {
 
           {/* 테스트용 임시 */}
           <Route path="/file" element={<FileUpload />} />
-
-          <Route path="/test" element={<AiModal />}></Route>
+<Route path='/test/test' element={<MatchToCareGiver></MatchToCareGiver>}></Route>
+          <Route path="/test" element={<AiModal/> } />
           <Route path="/chatbot" element={<AiChat />}></Route>
         </Routes>
       </Layout>

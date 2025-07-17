@@ -99,9 +99,12 @@ public class PatientServiceImpl implements PatientService {
         patient.changePatContent(updatePatDto.getPat_content());
         patient.changeStatus(updatePatDto.getStatus());
         patient.changeProfileImage(updatePatDto.getProfile_image());
+
+        patient.getDiseaseTags().clear();
+
         if (updatePatDto.getDisease_tags() != null && !updatePatDto.getDisease_tags().isEmpty()) {
 
-            patient.getDiseaseTags().clear();
+//            patient.getDiseaseTags().clear();
             //기존BoardTag -> 연결이 끊기면 필요가 있을까? X
             for (String disName : updatePatDto.getDisease_tags()) {
 

@@ -57,7 +57,7 @@ const SearchDivWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 10px;
-  width: 100%;
+  width: inherit;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 

@@ -27,8 +27,6 @@ const ReviewModal = ({ matNo, maxHearts = 5, onClose, onSubmitSuccess }) => {
         inputValue,
       };
 
-      console.log('서버에 보내는 리뷰 데이터:', reviewPayload);
-
       await reviewService.saveReview(reviewPayload);
 
       toast.success('리뷰가 성공적으로 등록되었습니다!');

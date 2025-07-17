@@ -38,7 +38,6 @@ const CareGiverCommunity = () => {
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCaregiver(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
-        console.log(community);
 
         setData(community.content); // 게시글 목록 등
         setTotalPage(community.totalPage); // 총 페이지 수
@@ -93,7 +92,6 @@ const CareGiverCommunity = () => {
                 onChange={(e) => setTempKeyword(e.target.value)}
               />
               <button type="submit">
-                {' '}
                 <img src="/src/assets/icons/icon_돋보기.png" alt="" />
               </button>
             </div>
@@ -143,6 +141,7 @@ const CareGiverCommunity = () => {
               <img src="/src/assets/icons/icon_돋보기.png" alt="" />
             </button>
           </div>
+
           {userNo && <LinkBtn to="/community/create/G">글쓰기</LinkBtn>}
         </form>
       </SearchBoard>

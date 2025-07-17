@@ -102,7 +102,7 @@ public class RAGController {
                     문서에 없는 내용은 '해당정보는 1:1문의에 문의 부탁드립니다'라고 답변해줘.
                     \n
                     [문서내용]
-                                        
+                    
                     """ + context + "\n\n[질문]\n" + question;
 
             String answer = chatClient.prompt(prompt).call().content();

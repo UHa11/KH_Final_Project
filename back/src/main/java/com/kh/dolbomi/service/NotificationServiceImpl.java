@@ -8,6 +8,7 @@ import com.kh.dolbomi.exception.NotificationRecipientNotFoundException;
 import com.kh.dolbomi.exception.NotificationSenderNotFoundException;
 import com.kh.dolbomi.repository.NotificationRepositoryV2;
 import com.kh.dolbomi.repository.UserRepositoryV2;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -67,10 +68,17 @@ public class NotificationServiceImpl implements NotificationService {
         unreadNotifications.forEach(Notification::markAsRead);
     }
 
-    //알림 온지 한달 된
-//    @Transactional
-//    public void deleteOldNotifications() {
-//        LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
-//        notificationRepositoryV2.deleteByNotificationCreateDateBefore(oneMonthAgo);
-//    }
+    //알림 전체 삭제
+    @Override
+    public void deleteAllByUserNo(Long userNo) {
+        notificationRepositoryV2.deleteByRecipient_UserNo(userNo);
+    }
+
+    //알림 개별 삭제
+    @Override
+    public void deleteNotification(Long notificationNo) {
+        Notification notification = notificationRepositoryV2.findById(notificationNo)
+                .orElseThrow(() -> new EntityNotFoundException("알림정보를 찾을 수 없습니다."));
+        notificationRepositoryV2.delete(notification);
+    }
 }

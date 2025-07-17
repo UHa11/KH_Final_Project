@@ -145,7 +145,6 @@ const PatientCardGroup = ({
                 <ReportButton
                   style={{ visibility: care.reviewNo ? 'hidden' : 'visible' }}
                   onClick={() => {
-                    console.log('selected care:', care);
                     setSelectedCaregiver(care); // 선택한 매칭 정보 저장
                     setShowReviewModal(true); // 모달 표시
                   }}

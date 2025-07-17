@@ -11,7 +11,6 @@ const SearchBar = ({ onSearch }) => {
   };
 
   const handleSearch = () => {
-    console.log('검색 키워드:', keyword);
     if (onSearch) {
       // onSearch prop이 있으면 호출
       onSearch(keyword);

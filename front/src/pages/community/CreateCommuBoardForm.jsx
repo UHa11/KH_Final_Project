@@ -25,7 +25,6 @@ const CreateCommuBoardForm = () => {
       alert('제목과 내용을 모두 입력해주세요.');
       return;
     }
-    console.log(userNo);
     try {
       setIsSubmitting(true);
 
@@ -60,10 +59,8 @@ const CreateCommuBoardForm = () => {
         user_no: userNo,
         role: role,
       };
-      console.log('보내는 데이터 : ', boardData);
       const response = await commuService.createCommunity(boardData);
-      console.log(response);
-
+     
       toast.success('등록되었습니다');
       if (role === 'C') navigate('/community/caregiver');
       else navigate('/community/guardian');

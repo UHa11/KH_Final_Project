@@ -33,7 +33,6 @@ const MyResume = () => {
       try {
         const careGiverResum = await jobSeekingService.getResume(Number(resumeNo));
         setCareGiverResum(careGiverResum);
-        console.log('확인', careGiverResum);
       } catch (error) {
         toast.error('상세 이력서 불러오기 중 문제가 발생하였습니다.');
         console.error('이력서 불러오기 오류 : ', error);
@@ -57,7 +56,6 @@ const MyResume = () => {
 
     const confirmDelete = window.confirm('정말로 이력서를 삭제하시겠습니까?');
     if (!confirmDelete) return;
-    console.log(resumeNo);
     try {
       await jobSeekingService.deleteResume(resumeNo);
       alert('이력서가 삭제되었습니다.');
@@ -69,7 +67,6 @@ const MyResume = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log('변경할 데이터', data);
     try {
       await jobSeekingService.updateResume(resumeNo, { ...careGiverResum, ...data });
       toast.success('이력서가 수정되었습니다!');

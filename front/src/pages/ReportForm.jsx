@@ -7,7 +7,7 @@ import { reportService } from '../api/report';
 import TextareaAutosize from 'react-textarea-autosize';
 import useUserStore from '../store/userStore';
 import { toast } from 'react-toastify';
-
+import { FaPlus } from 'react-icons/fa6';
 const ReportForm = () => {
   const { patNo } = useParams();
   const patName = useLocation().state;
@@ -84,7 +84,9 @@ const ReportForm = () => {
       </form>
       <br />
       <AddBtn onClick={() => setCount((prevCount) => prevCount + 1)}>
-        <ButtonText>➕</ButtonText>
+        <ButtonText>
+          <FaPlus size="20px" />
+        </ButtonText>
       </AddBtn>
       <br /> <br />
       <Line />

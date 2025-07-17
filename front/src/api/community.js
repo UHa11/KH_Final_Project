@@ -66,7 +66,6 @@ export const commuService = {
   createQuestion: async (questionData) => {
     try {
       const { data } = await api.post(API_ENDPOINTS.COMMUNITY.CREATE_QUESTION, questionData);
-      console.log(data);
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -93,7 +92,7 @@ export const commuService = {
       const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DETAIL(boardNo), {
         withCredentials: true,
       });
-      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DETAIL(boardNo));
+
       return snakeToCamel(data);
     } catch (error) {
       console.error('게시글 조회 실패:', error.response?.data?.message || error.message);
@@ -127,7 +126,6 @@ export const commuService = {
   deleteBoard: async (boardNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DELETE(boardNo));
-      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DELETE(boardNo));
       return snakeToCamel(data);
     } catch (error) {
       console.error('게시글 조회 실패:', error.response?.data?.message || error.message);
@@ -138,7 +136,6 @@ export const commuService = {
   deleteReply: async (replyNo) => {
     try {
       const { data } = await api.get(API_ENDPOINTS.COMMUNITY.DELETE_REPLY(replyNo));
-      console.log('요청 URL:', API_ENDPOINTS.COMMUNITY.DELETE_REPLY(replyNo));
       return snakeToCamel(data);
     } catch (error) {
       console.error('게시글 조회 실패:', error.response?.data?.message || error.message);

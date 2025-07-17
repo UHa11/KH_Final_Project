@@ -45,8 +45,7 @@ const QuestionDetail = () => {
     const loadCommunity = async () => {
       try {
         const community = await commuService.getCommunityDetail(boardNo);
-        console.log(community);
-
+      
         setCommunityDetail(community);
       } catch (error) {
         console.error(error);
@@ -79,8 +78,6 @@ const QuestionDetail = () => {
   const handleSaveReply = async () => {
     if (submitting) return;
 
-    console.log('작성 버튼 클릭');
-
     try {
       setSubmitting(true);
       const replyData = {
@@ -107,8 +104,6 @@ const QuestionDetail = () => {
 
   const handleUpdateReply = async () => {
     if (submitting) return;
-
-    console.log('작성 버튼 클릭');
 
     try {
       setSubmitting(true);

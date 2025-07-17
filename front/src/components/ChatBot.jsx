@@ -48,7 +48,12 @@ const ChatBot = () => {
   };
   return (
     <>
-      <ToggleButton onClick={() => setIsOpen(true)}></ToggleButton>
+      <ToggleButton onClick={() => setIsOpen(true)}>
+        <IconWrap>
+          <ChatBotIcon />
+          돌보미 가이드
+        </IconWrap>
+      </ToggleButton>
 
       <ChatBotContainer isOpen={isOpen}>
         <ChatMain>
@@ -225,4 +230,14 @@ const ErrorBox = styled.div`
   background: #f8d7da;
   padding: 12px;
   border-radius: 8px;
+`;
+
+const ChatBotIcon = styled(TbMessageChatbot)`
+  width: 25px;
+  height: 25px;
+`;
+
+const IconWrap = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[1]};
 `;

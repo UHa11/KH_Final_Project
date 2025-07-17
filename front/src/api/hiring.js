@@ -39,13 +39,12 @@ export const hiringService = {
   getHiringList: async ({ page = 0, size = 10, searchData }) => {
     try {
       const snake = camelToSnake(searchData);
-      console.log('검색조건: ', snake);
 
       // 쿼리 파라미터를 URL에 붙임
       const { data } = await api.get(API_ENDPOINTS.HIRING.LIST, {
         params: { page, size, ...snake },
       });
-      console.log('불러온 데이터 : ' + snakeToCamel(data));
+
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
@@ -59,7 +58,6 @@ export const hiringService = {
   // 구인글 등록 (POST)
   postNewHiring: async (payload) => {
     try {
-      console.log('최종 보내는 데이터: ', payload);
       const { data } = await api.post(API_ENDPOINTS.HIRING.BASE, camelToSnake(payload));
       return data;
     } catch (error) {

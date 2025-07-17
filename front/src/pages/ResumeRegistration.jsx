@@ -30,7 +30,6 @@ const ResumeRegistration = () => {
 
       try {
         const careGiverProfile = await userService.getUserProfile(user.userNo);
-        console.log(careGiverProfile);
         setCareGiver(careGiverProfile);
       } catch (error) {
         toast.error('이력서 등록 중 문제가 발생하였습니다.');

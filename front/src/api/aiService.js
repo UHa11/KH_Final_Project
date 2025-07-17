@@ -1,16 +1,15 @@
 import api from './axios';
 import { API_ENDPOINTS } from './config';
-import { snakeToCamel, camelToSnake } from '../utils/formatData';
+import { snakeToCamel } from '../utils/formatData';
 
 export const aiService = {
   getAiResponse: async (patNo) => {
-    console.log(patNo);
     try {
       const { data } = await api.post(
         API_ENDPOINTS.AI.RESPONSE(Number(patNo)),
         null, // POST body 없음
         {
-          timeout: 15000, // 👉 이 요청만 15초 대기 허용
+          timeout: 15000, // 이 요청만 15초 대기 허용
         }
       );
 

@@ -60,15 +60,14 @@ export const TextWrap = styled.div`
 export const BtnSection = styled.div`
   display: flex;
   width: 100%;
-   gap: 10px;
+  gap: 10px;
+  padding: 10px;
+  justify-content: center;
 
   button {
-   
     padding: ${({ theme }) => theme.spacing[3]};
-
     border-radius: ${({ theme }) => theme.borderRadius.base};
     cursor: pointer;
-
     color: ${({ theme }) => theme.colors.white};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
   }
@@ -167,7 +166,7 @@ export const InfoButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
   cursor: pointer;
   margin: ${({ theme }) => theme.spacing[1]} 0;
-
+  white-space: nowrap;
   /* ${media.md`  // 예: 768px 이하일 때
   padding: ${({ theme }) => `${theme.spacing[2]} ${theme.spacing[2]}`};
  `} */

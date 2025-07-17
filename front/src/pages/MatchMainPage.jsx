@@ -9,12 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import PatientCardGroup from '../components/PatientCardGroup';
 import TestPatientCard from '../components/TestPatinetCard';
-import { ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
+import {  ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
 import MatchCareGiverCard from '../components/MatchCareGiverCard';
 import SearchDate from '../components/SearchDate';
 import Paging from '../components/Paging';
 import ReviewModal from '../components/ReviewModal';
 import useUserStatusStore from '../store/userStatusStore';
+
 
 const MatchMainPage = () => {
   const { user } = useUserStore();
@@ -77,9 +78,22 @@ const MatchMainPage = () => {
   // 간병인보기 버튼
   const handleClick = (patNo) => {
     setSelectedPatNo(patNo);
-    getCareGiver(patNo);
-    setIsOpen(true);
-    console.log('확인:', selectedPatNo);
+    
+    if (activeTab === 'matching') {
+      getCareGiver(patNo);
+      if (isMobile) {
+        setIsOpen(true);
+      }
+      return;
+    }
+    if (activeTab === 'matched') {
+      getEndedMatchingList(patNo);
+      if (isMobile) {
+        setIsOpen(true);
+      }
+      return;
+    }
+
   };
   const handleClose = (patNo) => {
     setSelectedPatNo(patNo);
@@ -103,6 +117,7 @@ const MatchMainPage = () => {
     getCareGiver,
     getEndedMatchingList,
     handleEndedPageChange,
+    getSearchDateList,
     handleSearchClick,
     setSelectedPatNo,
     handleStartDateChange,
@@ -115,8 +130,6 @@ const MatchMainPage = () => {
     endedCurrentPage,
     endedTotalPage,
   } = MatchForm();
-
-  console.log('Main', selectedPatNo);
 
   return (
     <>
@@ -140,23 +153,25 @@ const MatchMainPage = () => {
         </TitleDiv>
       </HeadSection>
 
+
       <ProfileCardPair>
         <RightLineDiv>
           {/* 공통 환자목록이 보임 */}
           {/* 특정간병인을 선택 */}
-          {isOpen || (
+          {!isOpen&& 
             <TestPatientCard
               key={userPatients.patNo}
               patient={userPatients}
               getCareGiver={getCareGiver}
               getEndedMatchingList={getEndedMatchingList}
+
               activeTab={activeTab}
               handleClick={handleClick}
               setSelectedPatNo={setSelectedPatNo}
               isOpen={isOpen}
               isMobile={isMobile}
-            ></TestPatientCard>
-          )}
+            ></TestPatientCard>}
+        
         </RightLineDiv>
 
         {/* 모바일용 간병인 상세보기 */}
@@ -201,6 +216,7 @@ const MatchMainPage = () => {
                   endedTotalPage={endedTotalPage}
                   handleEndedPageChange={handleEndedPageChange}
                 ></MatchCareGiverCard>
+              
               </>
             )}
           </>
@@ -209,7 +225,6 @@ const MatchMainPage = () => {
 
       {showReviewModal && (
         <>
-          {console.log('ReviewModal에 전달된 matNo:', selectedCaregiver?.matNo)}
           <ReviewModal
             matNo={selectedCaregiver?.matNo}
             onClose={() => setShowReviewModal(false)}
@@ -293,7 +308,7 @@ const MatchSection = styled(Section)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[2]} 0;
+  padding: ${({ theme }) => theme.spacing[8]} ${({ theme }) => theme.spacing[2]};
   border: 1px solid ${({ theme }) => theme.colors.gray[5]};
 `;
 

@@ -11,7 +11,7 @@ const ResumeSelectModal = ({ onClose, hiringNo, onSuccess }) => {
 
   // 선택된 이력서 정보 가져오기
   const selectedResume = resumeList.find((resume) => String(resume.resumeNo) === String(selectedResumeNo));
-
+  
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
   const getProfileImageUrl = (path) => {
@@ -37,7 +37,7 @@ const ResumeSelectModal = ({ onClose, hiringNo, onSuccess }) => {
         <Card>
           <ProfileImage src={getProfileImageUrl(selectedResume?.profileImage)} alt="프로필" />
           <Info>
-            <Name>{selectedResume ? selectedResume?.resumeTitle : '지원합니다!'}</Name>
+            <Name>{selectedResume ? selectedResume?.resumeTitle : '이력서를 선택해주세요!'}</Name>
           </Info>
         </Card>
 

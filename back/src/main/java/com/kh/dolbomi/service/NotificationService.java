@@ -16,4 +16,10 @@ public interface NotificationService {
 
     //알림 읽음 상태 변경
     void markAllNotificationsAsRead(Long userNo);
+
+    //알림 전체 삭제
+    void deleteAllByUserNo(Long userNo);
+
+    //알림 개별 삭제
+    void deleteNotification(Long notificationNo);
 }

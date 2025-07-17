@@ -129,7 +129,6 @@ const ChatHome = ({ onClose }) => {
   // 현재 선택된 채팅방 ID를 관리. null이면 목록, 값이 있으면 해당 채팅방을 표시
   const [currentRoomId, setCurrentRoomId] = useState(null);
 
-
   const nodeRef = useRef(null);
 
   useEffect(() => {

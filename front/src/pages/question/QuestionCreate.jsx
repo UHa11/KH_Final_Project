@@ -34,10 +34,9 @@ const QuestionCreate = () => {
           file.type,
           'image/' // 저장 경로는 커뮤니티 게시판용
         );
-        console.log('change_name:', changeName); // ← 이 값 확인
         await uploadFileToS3(presignedUrl, file);
         uploadedFileNames.push(changeName); // 업로드된 파일 경로 저장
-        console.log('업로드된 파일명 리스트:', uploadedFileNames);
+      
       }
 
       // 2. 게시글 등록 (첨부파일 경로 포함)
@@ -52,8 +51,7 @@ const QuestionCreate = () => {
       };
 
       const response = await commuService.createQuestion(questionData);
-      console.log(response);
-
+     
       toast.success('등록되었습니다');
       navigate('/question/history');
     } catch (error) {
@@ -73,7 +71,6 @@ const QuestionCreate = () => {
   }
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files); // FileList → 배열
-    console.log('선택된 파일들:', selectedFiles);
     setFiles(selectedFiles);
   };
 

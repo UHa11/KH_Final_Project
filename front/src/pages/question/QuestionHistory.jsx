@@ -43,7 +43,6 @@ const QuestionHistory = () => {
           currentPage - 1,
           ITEMS_PER_PAGE
         );
-        console.log(myHistory);
 
         setData(myHistory.content); // 게시글 목록 등
         setTotalPage(myHistory.totalPage); // 총 페이지 수

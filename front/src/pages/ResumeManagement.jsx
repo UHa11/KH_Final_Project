@@ -14,7 +14,6 @@ import Paging from '../components/Paging';
 
 const ResumeManagement = () => {
   const { user } = useUserStore();
-  console.log(user);
   const [resumeLists, setResumeLists] = useState([]);
   const { currentPage, chagneCurrentPage } = pageing();
   const navigate = useNavigate();
@@ -28,10 +27,8 @@ const ResumeManagement = () => {
       }
 
       try {
-        console.log(user.userNo);
         const getResumeLists = await jobSeekingService.getMyResumeList(currentPage, user.userNo);
         setResumeLists(getResumeLists.content);
-        console.log(getResumeLists);
       } catch (err) {
         console.error(err);
       }

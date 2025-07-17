@@ -37,7 +37,7 @@ export const userService = {
   signUp: async (userData) => {
     try {
       const { data } = await api.post(API_ENDPOINTS.USERS.BASE, camelToSnake(userData));
-      console.log(data);
+     
       return data;
     } catch (error) {
       if (error.response) {
@@ -85,9 +85,7 @@ export const userService = {
 
   // user 정보 수정 (마이페이지 수정)
   updateUserProfile: async (userNo, updatedData) => {
-    console.log('updateUserProfile URL:', API_ENDPOINTS.USERS.PROFILE_UPDATE(userNo));
     try {
-      console.log('보내는 최종 데이터:', camelToSnake(updatedData));
       const { data } = await api.patch(API_ENDPOINTS.USERS.PROFILE_UPDATE(userNo), camelToSnake(updatedData), {
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +102,6 @@ export const userService = {
   deleteUser: async (userNo) => {
     try {
       const { data } = await api.patch(API_ENDPOINTS.USERS.DELETE(userNo));
-      console.log(data);
       return data;
     } catch (error) {
       console.error('회원탈퇴 실패:', error.response?.data?.message || error.message);
@@ -128,7 +125,6 @@ export const userService = {
   resetPassword: async (userId, userPwd, code) => {
     try {
       const response = await api.post(API_ENDPOINTS.USERS.RESET_PASSWORD, camelToSnake({ userId, userPwd, code }));
-      console.log(response);
       return response;
     } catch (error) {
       console.error('비밀번호 변경 실패 :', error.response?.data?.message || error.message);

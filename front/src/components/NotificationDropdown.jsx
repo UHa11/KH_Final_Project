@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import defaultProfile from '../assets/profileImg/img_간병인.png';
 import { notificationService } from '../api/notification';
 import { useNavigate } from 'react-router-dom';
-
+import { FaTimes } from 'react-icons/fa';
 // 임시 배열 생성해서 값 넣어둠
 // const notifications = [...Array(15).keys()].map((_, i) => ({
 //   id: i + 1,
@@ -74,6 +74,22 @@ const NotificationDropdown = ({ userNo, onClose }) => {
     <Container ref={dropdownRef}>
       <TitleWrap>
         <Title>알림</Title>
+        <DeleteAllButton
+          onClick={async () => {
+            if (!userNo) return;
+            const confirm = window.confirm('모든 알림을 삭제하시겠습니까?');
+            if (!confirm) return;
+
+            try {
+              await notificationService.deleteAllNotifications(userNo);
+              setNotifications([]);
+            } catch (err) {
+              console.error('전체 삭제 실패:', err);
+            }
+          }}
+        >
+          모두 삭제
+        </DeleteAllButton>
       </TitleWrap>
       <List>
         {notifications.length === 0 && <EmptyMessage>알림이 없습니다.</EmptyMessage>}
@@ -93,6 +109,19 @@ const NotificationDropdown = ({ userNo, onClose }) => {
               <Message>{noti.notificationMessage}</Message>
             </Center>
             <Right>{formatRelativeTime(noti.notificationCreateDate)}</Right>
+            <DeleteButton
+              onClick={async (e) => {
+                e.stopPropagation(); // 부모 클릭 방지
+                try {
+                  await notificationService.deleteNotification(noti.notificationNo);
+                  setNotifications((prev) => prev.filter((n) => n.notificationNo !== noti.notificationNo));
+                } catch (err) {
+                  console.error('알림 삭제 실패', err);
+                }
+              }}
+            >
+              <FaTimes />
+            </DeleteButton>
           </Item>
         ))}
       </List>
@@ -112,7 +141,7 @@ const Container = styled.div`
   top: 100%;
   right: 0;
   margin-top: ${({ theme }) => theme.spacing[2]};
-  width: 400px;
+  width: 450px;
   max-height: 400px;
   background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.primary};
@@ -178,4 +207,25 @@ const Right = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.xs};
   color: ${({ theme }) => theme.colors.gray[3]};
   white-space: nowrap;
+`;
+const DeleteButton = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.danger};
+  font-size: ${({ theme }) => theme.fontSizes.xl}; // 24px로 키움
+  z-index: ${({ theme }) => theme.zIndices.base};
+`;
+const DeleteAllButton = styled.button`
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.gray[4]};
+  cursor: pointer;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  padding: ${({ theme }) => theme.spacing[1]};
+  transition: color 0.2s;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.danger || 'red'};
+  }
 `;

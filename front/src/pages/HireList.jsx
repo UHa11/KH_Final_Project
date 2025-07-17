@@ -110,7 +110,6 @@ const HireList = () => {
       setLoading(true);
       setError(null);
       const res = await hiringService.getHiringList({ page: pageNumber, size: pageSize, searchData });
-      console.log('돌봄대상자 Response:', res); // 여기서 totalPages, content 등 확인
       if (res.totalElements === 0) {
         setHireLists([]);
         setError('등록된 돌봄 대상자 모집 글이 없습니다.');
@@ -659,11 +658,8 @@ const RadioGroup2 = styled.div`
 const RadioWrapper = styled.div`
   display: flex;
   align-items: center;
-<<<<<<< HEAD
-
-=======
   gap: 0;
->>>>>>> c20c21ed558b4b32187e3cb0167b23c76d238bc2
+
   // 'checked' prop을 받아서 스타일을 동적으로 적용합니다.
   input[type='radio'] {
     appearance: none;

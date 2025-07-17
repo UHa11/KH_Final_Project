@@ -37,7 +37,6 @@ const GuardianCommunity = () => {
     const loadCommunity = async () => {
       try {
         const community = await commuService.getGuardian(sortOption, keyword, currentPage - 1, ITEMS_PER_PAGE);
-        console.log(community);
 
         setData(community.content); // 게시글 목록 등
         setTotalPage(community.totalPage); // 총 페이지 수

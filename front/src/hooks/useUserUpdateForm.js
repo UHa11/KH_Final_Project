@@ -69,6 +69,14 @@ const useUserUpdateForm = ({ profile }) => {
         return true;
       };
 
+      //  자격증 누락 항목 체크 추가
+      for (let i = 0; i < licenseList.length; i++) {
+        const { licenseName, licensePublisher, licenseDate } = licenseList[i];
+        if (!licenseName || !licensePublisher || !licenseDate) {
+          toast.error(`자격증 항목의 모든 값을 입력해주세요.`);
+          return;
+        }
+      }
       // 자격증도 변경되었는지 체크
       const licensesChanged = !areLicensesEqual(profile.licenses || [], licenseList);
 
@@ -107,11 +115,7 @@ const useUserUpdateForm = ({ profile }) => {
           // 2. S3 직접 업로드
           await uploadFileToS3(presignedUrl, profileImageFile);
 
-          // 3. 파일 업로드 완료 후 메타데이터 저장
-          // const fileMeta = await completeUpload(profileImageFile.name, changeName, profileImageFile.type);
-          // console.log('completeUpload 응답:', fileMeta);
-
-          // 4. 유저 프로필에 파일명 저장
+          // 3. 유저 프로필에 파일명 저장
           updatedData.profileImage = changeName;
         } catch (uploadError) {
           toast.error('프로필 이미지 업로드에 실패했습니다.');

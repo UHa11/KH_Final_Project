@@ -19,15 +19,14 @@ export const MatchForm = () => {
 
   // 현재 매칭정보 : 특정 환자의 간병인 목록 가져오기
   const getCareGiver = (patNo) => {
-    console.log('함수호출', patNo);
     setCareGiverList([]);
     
     const getList = async () => {
       try {
-        const careGiverList = await matchingService.getMatchginCargiver(patNo, 'Y');
+        const res = await matchingService.getMatchginCargiver(patNo, 'Y');
         
         setSelectedPatNo(patNo);
-        careGiverList.length === 0 ? setCareGiverList([]) : setCareGiverList(careGiverList);
+        res.length === 0 ? setCareGiverList([]) : setCareGiverList(res);
 
       } catch (err) {
         console.error(err);
@@ -47,9 +46,11 @@ export const MatchForm = () => {
 
       EndMatchResultList(res);
       setSelectedPatNo(patNo);
-
+    
       setStartDate(null);
       setEndDate(null);
+
+
     } catch (err) {
       console.error(err);
     }

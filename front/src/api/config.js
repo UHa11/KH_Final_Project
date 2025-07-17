@@ -123,6 +123,8 @@ export const API_ENDPOINTS = {
     LIST: (userNo) => `/notifications/v1/list?user_no=${userNo}`,
     IS_READ: (userNo) => `/notifications/v1/unread-count?user_no=${userNo}`,
     READ: (userNo) => `/notifications/v1/mark-read?user_no=${userNo}`,
+    DELETE_ALL: (userNo) => `/notifications/v1/delete-all?user_no=${userNo}`,
+    DELETE: (notificationNo) => `/notifications/v1/${notificationNo}`,
   },
 
   API: {

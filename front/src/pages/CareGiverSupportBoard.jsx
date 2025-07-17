@@ -63,7 +63,6 @@ const SupportBoard = () => {
 
   // 이름 첫글자 O 처리하기
   const maskName = (name) => {
-    console.log(name);
     if (name.length === 2) {
       return name[0] + '○';
     } else if (name.length >= 3) {

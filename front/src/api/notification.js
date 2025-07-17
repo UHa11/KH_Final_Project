@@ -6,11 +6,7 @@ export const notificationService = {
   // 유저 알림 리스트 조회
   getNotifications: async (userNo) => {
     try {
-      console.log('getNotifications 호출, userNo:', userNo);
-      console.log('요청 URL:', API_ENDPOINTS.NOTIFICATIONS.LIST(userNo));
       const { data } = await api.get(API_ENDPOINTS.NOTIFICATIONS.LIST(userNo));
-
-      console.log('서버 응답 데이터:', data);
       return snakeToCamel(data);
     } catch (error) {
       console.error('알림 조회 실패:', error.response?.data?.message || error.message);
@@ -36,6 +32,28 @@ export const notificationService = {
       return data;
     } catch (error) {
       console.error('알림 읽음 처리 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  // 사용자 알림 전체 삭제
+  deleteAllNotifications: async (userNo) => {
+    try {
+      const { data } = await api.delete(API_ENDPOINTS.NOTIFICATIONS.DELETE_ALL(userNo));
+      return data;
+    } catch (error) {
+      console.error('알림 전체 삭제 실패:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  },
+
+  //알림 개별 삭제
+  deleteNotification: async (notificationNo) => {
+    try {
+      const { data } = await api.delete(API_ENDPOINTS.NOTIFICATIONS.DELETE(notificationNo));
+      return data;
+    } catch (error) {
+      console.error('알림 삭제 실패:', error.response?.data?.message || error.message);
       throw error;
     }
   },
