@@ -53,7 +53,7 @@ export const usepatientRegistrationForm = (user) => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting }, //유효성 에러및 제출중 상태
+    formState: { errors, isSubmitting }, //유효성 에러 및 제출중 상태
     watch, // watch 함수를 추가로 가져옵니다.
   } = useForm({
     resolver: yupResolver(patientsSchema), // yup스키마와 연결
@@ -62,6 +62,7 @@ export const usepatientRegistrationForm = (user) => {
       patGender: 'M',
       // 나머지 필드에 대한 기본값이 있다면 여기에 추가
     },
+  
   });
 
   const formatPhoneNumber = (value) => {

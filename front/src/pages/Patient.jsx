@@ -48,31 +48,39 @@ const Patient = () => {
         </Head>
 
         <CardWrap>
-          {userPatients?.map((pat) => (
-            <Card key={pat.patNo}>
-              <ProfileDiv>
-                <Img src={getProfileImageUrl(pat.profileImage)} alt="프로필" />
-                <div>
-                  <ProfileTextGray>
-                    <ProfileTextStrong>{pat.patName}</ProfileTextStrong> 님
-                  </ProfileTextGray>
+          {Array.isArray(userPatients) && userPatients.length > 0 ? (
+            <>
+              {userPatients?.map((pat) => (
+                <Card key={pat.patNo}>
+                  <ProfileDiv>
+                    <Img src={getProfileImageUrl(pat.profileImage)} alt="프로필" />
+                    <div>
+                      <ProfileTextGray>
+                        <ProfileTextStrong>{pat.patName}</ProfileTextStrong> 님
+                      </ProfileTextGray>
 
-                  <ProfileTextGray>
-                    나이
-                    <ProfileTextStrong>
-                      {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
-                    </ProfileTextStrong>
-                  </ProfileTextGray>
-                </div>
-              </ProfileDiv>
+                      <ProfileTextGray>
+                        나이
+                        <ProfileTextStrong>
+                          {pat.patAge}세 ({pat.patGender === 'F' ? '여' : '남'})
+                        </ProfileTextStrong>
+                      </ProfileTextGray>
+                    </div>
+                  </ProfileDiv>
 
-              <ButtonDiv>
-                <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>관리</MainMoveBtn>
-                {}
-                <MainMoveBtn onClick={() => navigate(`/report/${pat.patNo}`)}>일지</MainMoveBtn>
-              </ButtonDiv>
-            </Card>
-          ))}
+                  <ButtonDiv>
+                    <MainMoveBtn onClick={() => navigate(`/guardian/patient/${pat.patNo}`)}>관리</MainMoveBtn>
+                    {}
+                    <MainMoveBtn onClick={() => navigate(`/report/${pat.patNo}`)}>일지</MainMoveBtn>
+                  </ButtonDiv>
+                </Card>
+              ))}
+            </>
+          ) : (
+            <EmptyMessage>
+              등록된 돌봄대상자가 없습니다. <br /> 돌봄대상자 등록버튼을 클릭하여 등록해주세요
+            </EmptyMessage>
+          )}
         </CardWrap>
       </AuthContainer>
     </>
@@ -82,7 +90,7 @@ const Patient = () => {
 export default Patient;
 
 const CardWrap = styled.div`
-  display: grid;
+  display: ${({ userPatients }) => (Array.isArray(userPatients) && userPatients.length > 0 ? 'gird' : 'flex')};
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   align-content: start;
   gap: ${({ theme }) => theme.spacing[5]}; /* 카드 간 간격 */
@@ -142,4 +150,13 @@ const ButtonDiv = styled.div`
 
 const MainSubmitBtn = styled(MainSubmitButton)`
   width: 200px;
+`;
+// 비어있음 메세지
+export const EmptyMessage = styled.p`
+  width: 100%;
+  padding: auto;
+  text-align: center;
+  padding: ${({ theme }) => theme.spacing[10]} 0;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
 `;
