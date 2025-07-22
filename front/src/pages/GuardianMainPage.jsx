@@ -70,7 +70,6 @@ const GuardianMainPage = () => {
     const cleanPath = path.replace(/^\//, '');
     return `${CLOUDFRONT_URL}${cleanPath}`;
   };
-
   return (
     <>
       <HomeBannerSection>
@@ -151,7 +150,7 @@ const GuardianMainPage = () => {
             reviewList.map((review) => (
               <Card key={review.reviewNo}>
                 <CardTopContent>
-                  <CardImage $src={review.profileImage} />
+                  <CardImage src={getProfileImageUrl(review.profileImage)} />
                   <CardTextGroup>
                     <CardTitle>
                       {maskName(review.userName)} <span>간병사 </span>

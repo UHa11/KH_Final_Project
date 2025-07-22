@@ -63,6 +63,7 @@ export const BtnSection = styled.div`
   gap: 10px;
   padding: 10px;
   justify-content: center;
+  white-space: nowrap;
 
   button {
     padding: ${({ theme }) => theme.spacing[3]};

@@ -59,6 +59,9 @@ public class ReviewDto {
                     .review_content(review.getReviewContent())
                     .review_score(review.getScore())
                     .review_update_date(review.getUpdateDate())
+                    .profile_image(
+                            review.getMatchingList().stream().findFirst().map(m -> m.getCaregiver().getProfileImage())
+                                    .orElse(null))
                     .build();
         }
 
