@@ -12,6 +12,8 @@ import Cookies from 'js-cookie';
 import { userService } from '../api/users';
 import { notificationService } from '../api/notification';
 import { toast } from 'react-toastify';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+import { Tooltip, tooltipClasses } from '@mui/material';
 
 const Header = ({ openChat }) => {
   const { login } = useUserStore();
@@ -363,7 +365,94 @@ const Header = ({ openChat }) => {
             }}
           />
 
-          {isAuthenticated ? (
+          <div
+            style={{ position: 'relative', display: 'inline-block' }}
+            onClick={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
+            {isAuthenticated ? (
+              <MenuNavItemWrap style={{ cursor: 'pointer', padding: '5px' }}>
+                <span>{user?.userName} 님</span>
+
+                <MdKeyboardArrowDown size={'20px'}></MdKeyboardArrowDown>
+              </MenuNavItemWrap>
+            ) : (
+              <>
+                <NavItem to="/login" style={{ marginRight: '20px' }}>
+                  로그인
+                </NavItem>
+                <NavItem to="/signup">회원가입</NavItem>
+              </>
+            )}
+
+            {isHovering && isAuthenticated && (
+              <div
+                style={{
+                  paddingTop: '22px',
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  zIndex: 10,
+                  // backgroundColor: 'white',
+                  // border: '1px solid #ccc',
+                  // boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                <Wrap>
+                  <NavItem to="/myprofile">
+                    <Icon src="/src/assets/icons/icon_개인정보홈.png" alt="" /> 개인정보홈
+                  </NavItem>
+
+                  {userStatus ? (
+                    <NavItem to="/guardian/patient">
+                      <Icon src="/src/assets/icons/icon_돌봄대상자관리.png" alt="" />
+                      돌봄대상자 관리
+                    </NavItem>
+                  ) : (
+                    <NavItem to="/caregiver/resumemanagement">
+                      <Icon src="/src/assets/icons/icon_이력서등록.png" alt="" />
+                      이력서 등록
+                    </NavItem>
+                  )}
+
+                  {userStatus ? (
+                    <NavItem to="/guardian/jobopening-management">
+                      <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />내 구인글 관리
+                    </NavItem>
+                  ) : (
+                    <NavItem to="/caregiver/myproposer">
+                      <Icon src="/src/assets/icons/icon_내역관리.png" alt="" />
+                      나의 지원현황
+                    </NavItem>
+                  )}
+
+                  {userStatus ? (
+                    <NavItem to="/guardian/review">
+                      <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
+                      내가 쓴 리뷰
+                    </NavItem>
+                  ) : (
+                    <NavItem to="/caregiver/review">
+                      <Icon src="/src/assets/icons/icon_리뷰페이지.png" alt="" />
+                      받은 리뷰
+                    </NavItem>
+                  )}
+
+                  <NavItem to={`/${userStatus ? 'guardian' : 'caregiver'}/matchpage`}>
+                    <Icon src="/src/assets/icons/icon_매칭관리.png" alt="" />
+                    매칭관리
+                  </NavItem>
+
+                  <NavItem to="/" onClick={handleLogout}>
+                    <Icon src="/src/assets/icons/icon_로그아웃.png" alt="" />
+                    로그아웃
+                  </NavItem>
+                </Wrap>
+              </div>
+            )}
+          </div>
+
+          {/* {isAuthenticated ? (
             <NavItem onMouseEnter={() => setIsHovering(true)} style={{ cursor: 'pointer', padding: '5px' }}>
               {user?.userName} 님
             </NavItem>
@@ -443,7 +532,7 @@ const Header = ({ openChat }) => {
                 </NavItem>
               </Wrap>
             </div>
-          )}
+          )} */}
         </DesktopUserMenu>
       </HeaderWrapper>
     </HeaderContainer>
@@ -555,6 +644,12 @@ const NavItem = styled(Link)`
    font-size: ${({ theme }) => theme.fontSizes.base}; 
   
   `}
+`;
+const MenuNavItemWrap = styled(NavItem)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing[1]};
 `;
 
 const NavItemCenter = styled(Link)`

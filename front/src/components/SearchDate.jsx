@@ -5,6 +5,7 @@ import { media } from '../styles/MediaQueries';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DatePiker.css'
+
 const SearchDate = ({handleSearchClick, startDate, endDate, handleStartDateChange, handleEndDateChange, isOpen }) => {
 
 
