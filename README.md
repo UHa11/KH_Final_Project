@@ -75,6 +75,7 @@ Communication / IDE
 - spring boot oauth2  
 - amazon aws sdk (s3)  
 - spring ai
+- lombok
 
 ### API
 - Google Oauth 2.0 API : 소셜 로그인 인증
