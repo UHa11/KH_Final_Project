@@ -9,25 +9,24 @@ import { useNavigate } from 'react-router-dom';
 import { patientService } from '../api/patient';
 import PatientCardGroup from '../components/PatientCardGroup';
 import TestPatientCard from '../components/TestPatinetCard';
-import {  ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
+import { ProfileCardPair, RightLineDiv } from '../styles/MatchingCard';
 import MatchCareGiverCard from '../components/MatchCareGiverCard';
-import SearchDate from '../components/SearchDate';
-import Paging from '../components/Paging';
+
 import ReviewModal from '../components/ReviewModal';
 import useUserStatusStore from '../store/userStatusStore';
-
 
 const MatchMainPage = () => {
   const { user } = useUserStore();
   const navigate = useNavigate();
   const { setUserStatus } = useUserStatusStore();
+
   // 매칭 / 매칭종료 상태 구분
   const [activeTab, setActiveTab] = useState('matching');
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  // 매칭 / 매칭종료 공통 : 유저의 환자정보가져오기
+  // 매칭 / 매칭종료 공통 : 환자정보가져오기
   const [userPatients, setUserpatients] = useState([]);
 
   useEffect(() => {
@@ -77,8 +76,8 @@ const MatchMainPage = () => {
   // 자식컴포넌트로 보내줌
   // 간병인보기 버튼
   const handleClick = (patNo) => {
-    setSelectedPatNo(patNo);
-    
+    changeSelectNo(patNo);
+
     if (activeTab === 'matching') {
       getCareGiver(patNo);
       if (isMobile) {
@@ -94,9 +93,12 @@ const MatchMainPage = () => {
       return;
     }
 
+    if (patNo === 0) {
+      changeSelectNo('');
+    }
   };
   const handleClose = (patNo) => {
-    setSelectedPatNo(patNo);
+    changeSelectNo(patNo);
     setIsOpen(false);
   };
 
@@ -114,19 +116,14 @@ const MatchMainPage = () => {
   };
 
   const {
+    cargiverListRest,
+    caregiverList,
     getCareGiver,
     getEndedMatchingList,
-    handleEndedPageChange,
-    getSearchDateList,
-    handleSearchClick,
-    setSelectedPatNo,
-    handleStartDateChange,
-    handleEndDateChange,
-    startDate,
-    endDate,
     selectedPatNo,
-    caregiverList,
-    endedCaregiverList,
+    changeSelectNo,
+    handleEndedPageChange,
+    handleSearchClick,
     endedCurrentPage,
     endedTotalPage,
   } = MatchForm();
@@ -153,73 +150,54 @@ const MatchMainPage = () => {
         </TitleDiv>
       </HeadSection>
 
-
+      
       <ProfileCardPair>
-        <RightLineDiv>
-          {/* 공통 환자목록이 보임 */}
-          {/* 특정간병인을 선택 */}
-          {!isOpen&& 
+        {/*TestPatientCard : 모바일, 웹상의 환자목록이며 isOPen은  모바일 일때 전체목록을 보여주고 이후에 TestPatientCard를 안보이게 하려는 상태값이 */}
+        {!isOpen && (
+          <RightLineDiv>
             <TestPatientCard
               key={userPatients.patNo}
               patient={userPatients}
-              getCareGiver={getCareGiver}
-              getEndedMatchingList={getEndedMatchingList}
-
+              handleClick={handleClick}
+              setSelectedPatNo={changeSelectNo}
+              isMobile={isMobile}
+            ></TestPatientCard>
+          </RightLineDiv>
+        )}
+        {/* MatchCareGiverCard :웹버전일 때 간병인을 그리는 컴포넌트이다*/}
+        {!isMobile && (
+          <>
+            <MatchCareGiverCard
+              caregiverList={caregiverList}
+              cargiverListRest={cargiverListRest}
               activeTab={activeTab}
               handleClick={handleClick}
-              setSelectedPatNo={setSelectedPatNo}
-              isOpen={isOpen}
-              isMobile={isMobile}
-            ></TestPatientCard>}
-        
-        </RightLineDiv>
-
-        {/* 모바일용 간병인 상세보기 */}
-        {isOpen ? (
+              handleSearchClick={handleSearchClick}
+              setShowReviewModal={handleSetShowReviewModal}
+              setSelectedCaregiver={handleSetSelectedCargiver}
+              selectedPatNo={selectedPatNo}
+              endedCurrentPage={endedCurrentPage}
+              endedTotalPage={endedTotalPage}
+              handleEndedPageChange={handleEndedPageChange}
+            ></MatchCareGiverCard>
+          </>
+        )}
+        {/* PatientCardGroup : 모바일일 때 전체환자목록에서 세부환자별 간병인 카드를 다시 그리는 컴포넌트이다.*/}
+        {isMobile && isOpen && (
           <PatientCardGroup
             patient={userPatients.find((p) => p.patNo === selectedPatNo)}
             caregiverList={caregiverList}
-            endedCaregiverList={endedCaregiverList}
+            handleClick={handleClick}
             activeTab={activeTab}
+            cargiverListRest={cargiverListRest}
             onClose={() => handleClose}
+            handleSearchClick={handleSearchClick}
             endedCurrentPage={endedCurrentPage}
             endedTotalPage={endedTotalPage}
-            startDate={startDate}
-            endDate={endDate}
-            handleStartDateChange={handleStartDateChange}
-            handleEndDateChange={handleEndDateChange}
-            handleSearchClick={handleSearchClick}
             handleEndedPageChange={handleEndedPageChange}
             handleSetShowReviewModal={handleSetShowReviewModal}
             handleSetSelectedCargiver={handleSetSelectedCargiver}
-            selectedPatNo={selectedPatNo}
-            isOpen={isOpen}
           />
-        ) : (
-          <>
-            {!isMobile && (
-              <>
-                <MatchCareGiverCard
-                  caregiverList={caregiverList}
-                  endedCaregiverList={endedCaregiverList}
-                  activeTab={activeTab}
-                  getEndedMatchingList={getEndedMatchingList}
-                  handleSearchClick={handleSearchClick}
-                  setShowReviewModal={handleSetShowReviewModal}
-                  setSelectedCaregiver={handleSetSelectedCargiver}
-                  startDate={startDate}
-                  endDate={endDate}
-                  handleStartDateChange={handleStartDateChange}
-                  handleEndDateChange={handleEndDateChange}
-                  selectedPatNo={selectedPatNo}
-                  endedCurrentPage={endedCurrentPage}
-                  endedTotalPage={endedTotalPage}
-                  handleEndedPageChange={handleEndedPageChange}
-                ></MatchCareGiverCard>
-              
-              </>
-            )}
-          </>
         )}
       </ProfileCardPair>
 

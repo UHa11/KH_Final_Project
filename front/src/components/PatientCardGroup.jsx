@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import pat_profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import care_profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import {
@@ -26,27 +26,30 @@ import styled from 'styled-components';
 import SearchDate from './SearchDate';
 import { Button } from '../styles/Auth.styles';
 import Paging from './Paging';
-import MatchCareGiverCard from './MatchCareGiverCard';
 
 const PatientCardGroup = ({
   patient,
   caregiverList,
-  endedCaregiverList,
-  onClose,
-  activeTab,
-  startDate,
-  endDate,
-  handleStartDateChange,
-  handleEndDateChange,
   handleSearchClick,
+  onClose,
+  handleClick,
+  activeTab,
   endedCurrentPage,
   endedTotalPage,
   handleEndedPageChange,
   setShowReviewModal,
   setSelectedCaregiver,
-  isOpen
+  cargiverListRest,
 }) => {
+  useEffect(() => {
+    if(patient){
+      handleClick(patient.patNo)
+    }
+    cargiverListRest();
+  }, [activeTab]);
+
   if (!patient) return <p>선택된 환자 정보가 없습니다.</p>;
+
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
 
@@ -58,16 +61,8 @@ const PatientCardGroup = ({
     return `${CLOUDFRONT_URL}${cleanPath}`;
   };
 
-  let currentList;
-
-  if (activeTab === 'matching') {
-    currentList = caregiverList;
-  } else if (activeTab === 'matched') {
-    currentList = endedCaregiverList;
-  }
-
   const navigate = useNavigate();
-  
+
   return (
     <Div>
       <ProfileCard type="patient">
@@ -91,23 +86,12 @@ const PatientCardGroup = ({
 
       <Button onClick={onClose(null)}>상세보기 닫기</Button>
 
-    {activeTab === 'matched'  ? (
-        <SearchDate
-          startDate={startDate}
-          endDate={endDate}
-          handleStartDateChange={handleStartDateChange}
-          handleEndDateChange={handleEndDateChange}
-          handleSearchClick={handleSearchClick}
-        />
-      ) : (
-        <></>
-      )}
+      {activeTab === 'matched' ? <SearchDate handleSearchClick={handleSearchClick} patient={patient} /> : <></>}
 
-      {currentList &&
-        currentList.length > 0 ?(
-        currentList.map((care) => (
+      {caregiverList && caregiverList.length > 0 ? (
+        caregiverList.map((care) => (
           // 모바일일때는 반응형으로 display none: flex로 잡고
-          // 여기는 모바일일 때 보여야 상세보기로 display 조건을 isOpen 속성을 추가하여 caregiverCard와 다르게 써야함 
+          // 여기는 모바일일 때 보여야 상세보기로 display 조건을 isOpen 속성을 추가하여 caregiverCard와 다르게 써야함
           <NewWrap key={care.caregiverNo}>
             <CaregiverDiv>
               <CaregiverImg
@@ -154,10 +138,10 @@ const PatientCardGroup = ({
               )}
             </CargiverButtonDiv>
           </NewWrap>
-        ))): (
-          <EmptyMessage>매칭된 간병이 없습니다.</EmptyMessage>
-        )
-      } 
+        ))
+      ) : (
+        <EmptyMessage>매칭된 간병이 없습니다.</EmptyMessage>
+      )}
 
       {activeTab === 'matched' ? (
         <PageWrapper>
@@ -180,5 +164,3 @@ const Div = styled.div`
   padding-bottom: 80px; //
   position: relative;
 `;
-
-

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import pat_profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import care_profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import {
@@ -18,29 +18,26 @@ import styled from 'styled-components';
 import SearchDate from '../components/SearchDate';
 import Paging from './Paging';
 
+
 const MatchCareGiverCard = ({
   caregiverList,
-  endedCaregiverList,
+  cargiverListRest,
   activeTab,
   setShowReviewModal,
   setSelectedCaregiver,
-  startDate,
-  endDate,
-  handleStartDateChange,
-  handleEndDateChange,
   handleSearchClick,
   selectedPatNo,
   endedCurrentPage,
   endedTotalPage,
   handleEndedPageChange,
 }) => {
-  let currentList;
 
-  if (activeTab === 'matching') {
-    currentList = caregiverList;
-  } else if (activeTab === 'matched') {
-    currentList = endedCaregiverList;
-  }
+
+  useEffect(() => {
+    cargiverListRest()
+
+   }, [activeTab]);
+ 
 
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
@@ -58,16 +55,13 @@ const MatchCareGiverCard = ({
     <Div>
       {activeTab === 'matched' && (
         <SearchDate
-          startDate={startDate}
-          endDate={endDate}
-          handleStartDateChange={handleStartDateChange}
-          handleEndDateChange={handleEndDateChange}
           handleSearchClick={handleSearchClick}
+          selectedPatNo ={selectedPatNo}
         />
       )}
 
-      {currentList && currentList.length > 0 ? (
-        currentList.map((care, index) => (
+      {caregiverList && caregiverList.length > 0 ? (
+        caregiverList.map((care, index) => (
           <>
             <CargiverWrap key={index}>
               <CaregiverDiv>

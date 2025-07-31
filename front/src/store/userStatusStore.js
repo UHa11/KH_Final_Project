@@ -7,8 +7,6 @@ const useUserStatusStore = create(
 
     (set) => ({
       userStatus: true,
-      
-
       // 보호자은 true / 간병인는 false
       setUserStatus: (status) =>
         

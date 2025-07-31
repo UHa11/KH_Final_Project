@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Title, AuthContainer, TipP } from '../styles/Auth.styles';
+import { Title, AuthContainer, TipP, ErrorMessage } from '../styles/Auth.styles';
 import { SubmitButton, ButtonText } from '../styles/common/Button';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -9,13 +9,14 @@ import { CiCircleInfo } from 'react-icons/ci';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { jobSeekingService } from '../api/jobSeeking';
 import { toast } from 'react-toastify';
-import { pageing } from '../hooks/pageing';
+import { usePageing } from '../hooks/pageing';
 import Paging from '../components/Paging';
+import { Tooltip, tooltipClasses } from '@mui/material';
 
 const ResumeManagement = () => {
   const { user } = useUserStore();
   const [resumeLists, setResumeLists] = useState([]);
-  const { currentPage, chagneCurrentPage } = pageing();
+  const { currentPage, chagneCurrentPage } = usePageing();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,6 +68,8 @@ const ResumeManagement = () => {
       console.error('상태 변경 에러: ', error);
     }
   };
+
+  console.log(resumeLists);
   return (
     <>
       <AuthContainer>
@@ -74,45 +77,92 @@ const ResumeManagement = () => {
           <TitleSection>
             <NewTitle>이력서 목록</NewTitle>
             <TipP>
-              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 체크표시된 이력서는 구인글로 게시됩니다.
-              확인하세요.
+              <CiCircleInfo color="#EF7A46" size={'20px'}></CiCircleInfo> 체크표시된 이력서는 구직글로 게시되며 총 3건만
+              가능합니다.
             </TipP>
           </TitleSection>
 
           <RegistrationButton>
-            <ButtonText onClick={() => navigate('/caregiver/resumeregistration')}>이력서 등록</ButtonText>
+            <Tooltip
+              title={
+                <>
+                  버튼을 클릭하면 이력서를 작성하실 수 있습니다. <br />
+                  이력서 작성은 갯수 제한이 없습니다.
+                </>
+              }
+              arrow
+              placement="bottom"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    backgroundColor: '#f3f3f3',
+                    color: 'black',
+                    fontSize: 12,
+                    boxShadow: 1,
+                  },
+                },
+                arrow: {
+                  sx: {
+                    color: '#f3f3f3',
+                  },
+                },
+                popper: {
+                  sx: {
+                    [`&.${tooltipClasses.popper}[data-popper-placement*="bottom"] .${tooltipClasses.tooltip}`]: {
+                      marginTop: '20px',
+                    },
+                  },
+                },
+              }}
+            >
+              <ButtonText onClick={() => navigate('/caregiver/resumeregistration')}>이력서 등록</ButtonText>
+            </Tooltip>
           </RegistrationButton>
         </Head>
 
         <CardWrap>
-          <ContentSection>
-            {resumeLists?.map((resume, index) => (
-              <Card key={resume.resumeNo}>
-                <ProfileDiv>
-                  <ProfileTextGray>
-                    NO <ProfileTextStrong>{index + 1}</ProfileTextStrong>
-                  </ProfileTextGray>
-                  <StyledCheckbox checked={resume.status === 'Y'}>
-                    <HiddenCheckbox
-                      checked={resume.status === 'Y'}
-                      onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
-                    />
-                    {resume.status === 'Y' && <IoCheckmarkOutline size="20px" color="white" />}
-                  </StyledCheckbox>
-                </ProfileDiv>
+          {Array.isArray(resumeLists) && resumeLists.length > 0 ? (
+            <>
+              <ContentSection>
+                {resumeLists.map((resume, index) => (
+                  <Card key={resume.resumeNo}>
+                    <ProfileDiv>
+                      <ProfileTextGray>
+                        NO <ProfileTextStrong>{index + 1}</ProfileTextStrong>
+                      </ProfileTextGray>
+                      <StyledCheckbox checked={resume.status === 'Y'}>
+                        <HiddenCheckbox
+                          checked={resume.status === 'Y'}
+                          onChange={() => handleStatusToggle(resume.resumeNo, resume.status)}
+                        />
+                        {resume.status === 'Y' && <IoCheckmarkOutline size="20px" color="white" />}
+                      </StyledCheckbox>
+                    </ProfileDiv>
 
-                <ButtonDiv>
-                  <SubmitButton1 onClick={() => navigate(`/caregiver/myresume/${resume.resumeNo}`)}>
-                    <ButtonText>이력서 상세</ButtonText>
-                  </SubmitButton1>
-                </ButtonDiv>
-              </Card>
-            ))}
-          </ContentSection>
+                    <ButtonDiv>
+                      <SubmitButton1 onClick={() => navigate(`/caregiver/myresume/${resume.resumeNo}`)}>
+                        <ButtonText>이력서 상세</ButtonText>
+                      </SubmitButton1>
+                    </ButtonDiv>
+                  </Card>
+                ))}
+              </ContentSection>
 
-          <PagingSection>
-            <Paging currentPage={currentPage} totalPage={resumeLists.totalPage} chagneCurrentPage={chagneCurrentPage} />
-          </PagingSection>
+              <PagingSection>
+                <Paging
+                  currentPage={currentPage}
+                  totalPage={resumeLists.totalPage}
+                  chagneCurrentPage={chagneCurrentPage}
+                />
+              </PagingSection>
+            </>
+          ) : (
+            <EmptyMessage>
+              등록된 이력서가 없습니다.
+              <br />
+              이력서 등록 버튼을 눌러 등록해주세요.
+            </EmptyMessage>
+          )}
         </CardWrap>
       </AuthContainer>
     </>
@@ -238,5 +288,14 @@ const StyledCheckbox = styled.label`
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+`;
+
+// 비어있음 메세지
+export const EmptyMessage = styled.p`
+  width: 100%;
+  text-align: center;
+  padding: ${({ theme }) => theme.spacing[10]} 0;
+  color: ${({ theme }) => theme.colors.gray[3]};
+  font-size: ${({ theme }) => theme.fontSizes.base};
 `;
 export default ResumeManagement;

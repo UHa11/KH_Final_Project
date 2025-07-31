@@ -96,7 +96,6 @@ export const matchingService = {
           size,
         },
       });
-      ongamepadconnected;
       return snakeToCamel(data);
     } catch (error) {
       if (error.response) {
