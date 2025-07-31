@@ -21,13 +21,17 @@
 ### USERS (회원)
 <img width="800" height="385" alt="스크린샷 2025-07-31 오후 5 27 22" src="https://github.com/user-attachments/assets/2370056a-50e1-4e85-a9fc-5730d59d9523" />
 
-<p>목적 : 보호자 또는 간병인 공통 회원 정보를 저장합니다.</p>
-<p>주요 컬럼 :</p>
-<p>user_no : 회원 식별을 위한 기본키</p> 
-<p>id, password, name, phone, email, gender : 공통 로그인 및 연락 정보</p>  
-<p>role : 사용자 역할 (e.g., 사용자 / 관리자 구분)</p>
-<p>address, birth, profile_image : 추가 프로필 정보</p>
-<p>특징 : 회원의 공통 정보만 저장되며, 역할에 따라 추가 정보는 다른 테이블에 분리되어 있습니다.</p>
+<p><strong>목적:</strong> 보호자 또는 간병인 공통 회원 정보를 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>user_no</code>: 회원 식별을 위한 기본키</li>
+  <li><code>id</code>, <code>password</code>, <code>name</code>, <code>phone</code>, <code>email</code>, <code>gender</code>: 공통 로그인 및 연락 정보</li>
+  <li><code>role</code>: 사용자 역할 (e.g., 사용자 / 관리자 구분)</li>
+  <li><code>address</code>, <code>birth</code>, <code>profile_image</code>: 추가 프로필 정보</li>
+</ul>
+
+<p><strong>특징:</strong> 회원의 공통 정보만 저장되며, 역할에 따라 추가 정보는 다른 테이블에 분리되어 있습니다.</p>
  
 
 
