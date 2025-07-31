@@ -26,6 +26,7 @@ import {
 } from '../styles/MatchingCard';
 import Paging from '../components/Paging';
 import SearchDate from '../components/SearchDate';
+import { searchForm } from '../hooks/searchForm';
 
 const MatchToCareGiver = () => {
   // 매칭중 매칭종료 변경
@@ -64,10 +65,7 @@ const MatchToCareGiver = () => {
     handleEndedPageChange,
     handleSearchClick,
     setSelectedPatNo,
-    handleStartDateChange,
-    handleEndDateChange,
-    startDate,
-    endDate,
+
     selectedPatNo,
     caregiverList,
 
@@ -75,6 +73,9 @@ const MatchToCareGiver = () => {
     endedCurrentPage,
     endedTotalPage,
   } = MatchForm();
+
+
+
 
   //매칭중/ 매칭종료에 따른 간병인 목록을 다르게 가져옴
 
@@ -164,16 +165,12 @@ const MatchToCareGiver = () => {
                 </ProfileInfo>
               </ProfileCard>
 
-                {activeTab === 'matched' && (
-                  <SearchDate
-                    startDate={startDate}
-                    endDate={endDate}
-                    handleStartDateChange={handleStartDateChange}
-                    handleEndDateChange={handleEndDateChange}
-                    handleSearchClick={handleSearchClick}
-                  />
-                )}
-          
+              {activeTab === 'matched' && (
+                <SearchDate
+                  handleSearchClick={handleSearchClick}
+                  selectedPatNo={selectedPatNo}
+                />
+              )}
 
               {currentList &&
                 currentList.length > 0 &&
@@ -234,7 +231,7 @@ const MatchToCareGiver = () => {
         ) : (
           <EmptyMessage>등록된 환자가 없습니다.</EmptyMessage>
         )}
-        
+
         {/* 
                {selectedPatNo ? (
                   <EmptyMessage>매칭된 간병이 없습니다.</EmptyMessage>

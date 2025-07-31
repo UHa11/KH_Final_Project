@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { media } from '../styles/MediaQueries';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/DatePiker.css'
+import { searchForm } from '../hooks/searchForm';
 
-const SearchDate = ({handleSearchClick, startDate, endDate, handleStartDateChange, handleEndDateChange, isOpen }) => {
+const SearchDate = ({handleSearchClick, patient, selectedPatNo
+ }) => {
+
+
+  const { startDate, endDate, handleStartDateChange, handleEndDateChange, dateReset } = searchForm();
+
+
+useEffect(() => {
+
+  dateReset();
+
+},[patient, selectedPatNo])
 
 
 
@@ -46,7 +58,7 @@ const SearchDate = ({handleSearchClick, startDate, endDate, handleStartDateChang
         customInput={<CustomDateButton />}
       ></DatePicker>
 
-      <SearchBtn onClick={handleSearchClick}>검색</SearchBtn>
+      <SearchBtn onClick={() => handleSearchClick(startDate, endDate)}>검색</SearchBtn>
     </SearchDateWrap>
   </SearchDivWrap>
   );
@@ -64,20 +76,24 @@ const SearchDivWrap = styled.div`
 
 const SearchDateWrap = styled.div`
   display: flex; 
+  flex-direction: column;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing[3]};
+  gap: ${({ theme }) => theme.spacing[1]};
 
    ${media.sm`    
-
+    flex-direction: row;
     gap: ${({ theme }) => theme.spacing[5]};
+    width: fit-content;
+    
  `}
 `;
 
 const SearchBtn = styled.button`
   background: ${({ theme }) => theme.colors.primary};
   border-radius: ${({ theme }) => theme.borderRadius.md} ${({ theme }) => theme.borderRadius.md};
-  width: 100px;
+ width: 100%;
   background-color: ${({ theme }) => theme.colors.primary};
   color: white;
 
@@ -93,5 +109,6 @@ const SearchBtn = styled.button`
   ${media.sm`
     width: 150px;
   `}
+
 
 `;

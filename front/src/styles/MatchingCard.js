@@ -1,6 +1,4 @@
-import styled, { css } from 'styled-components';
-import { Button, Title } from './Auth.styles';
-import { MainMoveButton, MainSubmitButton } from './common/Button';
+import styled from 'styled-components';
 import { media } from '../styles/MediaQueries';
 
 export const CardWrap = styled.div`
@@ -59,9 +57,9 @@ export const TextWrap = styled.div`
 `;
 export const BtnSection = styled.div`
   display: flex;
-  width: 100%;
+  flex-direction: column;
   gap: 10px;
-  padding: 10px;
+  padding: 10px 0;
   justify-content: center;
   white-space: nowrap;
 
@@ -71,7 +69,21 @@ export const BtnSection = styled.div`
     cursor: pointer;
     color: ${({ theme }) => theme.colors.white};
     font-weight: ${({ theme }) => theme.fontWeights.medium};
+   
+    ${media.xs`  
+    width: 100%;
+    justify-content: center;
+  `}
+
   }
+
+  ${media.sm`  
+    display : flex;
+    flex-direction: row;
+    
+    width: 100%;
+  `}
+
 `;
 export const ReportBtn = styled.button`
   background-color: ${({ theme }) => theme.colors.secondary};

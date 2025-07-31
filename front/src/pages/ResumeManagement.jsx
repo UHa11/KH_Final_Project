@@ -9,14 +9,14 @@ import { CiCircleInfo } from 'react-icons/ci';
 import { IoCheckmarkOutline } from 'react-icons/io5';
 import { jobSeekingService } from '../api/jobSeeking';
 import { toast } from 'react-toastify';
-import { pageing } from '../hooks/pageing';
+import { usePageing } from '../hooks/pageing';
 import Paging from '../components/Paging';
 import { Tooltip, tooltipClasses } from '@mui/material';
 
 const ResumeManagement = () => {
   const { user } = useUserStore();
   const [resumeLists, setResumeLists] = useState([]);
-  const { currentPage, chagneCurrentPage } = pageing();
+  const { currentPage, chagneCurrentPage } = usePageing();
   const navigate = useNavigate();
 
   useEffect(() => {

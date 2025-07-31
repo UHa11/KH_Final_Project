@@ -301,4 +301,9 @@ const AddressInput = styled(Input)`
   width: 100%;
 `;
 
+// const ErrorMessage = styled.span`
+//   color: ${({ theme }) => theme.colors.error};
+//   font-size: ${({ theme }) => theme.fontSizes.sm};
+// `;
+
 export default PatientRegistration;

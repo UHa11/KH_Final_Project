@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import pat_profileImage from '../assets/images/pat.png'; // 프로필 이미지 경로
 import care_profileImage from '../assets/images/cargiver.png'; // 프로필 이미지 경로
 import {
@@ -13,30 +13,16 @@ import {
 } from '../styles/MatchingCard';
 import { ProfileCard } from '../styles/MatchingCard';
 import { useNavigate } from 'react-router-dom';
-import { MatchForm } from '../hooks/matchFrom';
+
 import styled from 'styled-components';
 import { media } from '../styles/MediaQueries';
 
-const TestPatientCard = ({ patient, getCareGiver, getEndedMatchingList, handleClick, activeTab, isOpen }) => {
+const TestPatientCard = ({ patient, handleClick }) => {
+ 
   if (!patient) {
     alert('선택된 환자가 없습니다.');
   }
 
- 
-  if (!patient){
-    alert("선택된 환자가 없습니다.")
-  }; 
- 
-  const handlePatientClick = (patNo) => {
-    if (activeTab === 'matching') {
-      getCareGiver(patNo);
-      return
-    }
-    if (activeTab === 'matched') {
-      getEndedMatchingList(patNo);
-      return
-    }
-  };
 
   const CLOUDFRONT_URL = 'https://d20jnum8mfke0j.cloudfront.net/';
   //이미지 경로 갖고오고 없다면 기본이미지
@@ -52,6 +38,7 @@ const TestPatientCard = ({ patient, getCareGiver, getEndedMatchingList, handleCl
 
   return (
     <div>
+   
       {patient && patient.length > 0 ? (
         patient.map((pat) => (
           <ProfileCard type="patient" key={pat.patNo}>

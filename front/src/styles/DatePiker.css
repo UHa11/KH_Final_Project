@@ -1,11 +1,12 @@
+import 
 
 .react-datepicker-wrapper {
-  width: fit-content;
+  width: 100%;
 
 }
 
 .custom-datepicker-button {
-  width: 140px;
+  width: 150px;
   padding: 8px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -19,8 +20,15 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 20px;
+
+ 
 }
 
+@media (max-width: 380px) {
+  .custom-datepicker-button {
+    width: 350px;
+  }
+}
 .custom-datepicker-button span {
   font-size: 14px;
 }

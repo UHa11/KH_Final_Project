@@ -20,7 +20,7 @@ export const useLoginForm = () => {
   const login = useUserStore((state) => state.login);
   const { userStatus, setUserStatus } = useUserStatusStore();
 
-  //react-hook-form으로 폼 상태 초기화및 유효성 검사
+  //react-hook-form으로 폼 상태 초기화 및 유효성 검사
   const {
     register,
     handleSubmit,
