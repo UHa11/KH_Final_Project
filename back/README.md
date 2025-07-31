@@ -55,6 +55,20 @@
 ### COMMUNITY (게시판)
 <img width="1160" height="478" alt="스크린샷 2025-07-31 오후 5 33 42" src="https://github.com/user-attachments/assets/cb1a8947-bf0e-44d8-b07f-87099e5880f1" />
 
+<p><strong>목적:</strong> 보호자 및 간병인을 위한 커뮤니티 게시판 글을 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>board_no</code>: 게시글 고유 번호 (PK)</li>
+  <li><code>user_no</code>: 작성자 번호 (FK)</li>
+  <li><code>role</code>: 게시글 유형 (G: 보호자, C: 간병인, Q: 질문)</li>
+  <li><code>title</code>, <code>content</code>: 게시글 제목과 내용</li>
+  <li><code>status</code>: 삭제 여부</li>
+  <li><code>created_at</code>: 작성 일시</li>
+</ul>
+
+<p><strong>특징:</strong> Q&A, 자유 게시판 등 다양한 형태의 커뮤니티 활동 지원</p>
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /community/v1/caregiver | 간병인 게시판 리스트 조회 (option, keyword, page, size) |
@@ -75,6 +89,17 @@
 ### REVIEWS (리뷰)
 <img width="633" height="171" alt="스크린샷 2025-07-31 오후 5 34 58" src="https://github.com/user-attachments/assets/5ad22f9f-ced5-4f55-8f6e-7051fcc09b64" />
 
+<p><strong>목적:</strong> 매칭 종료 후 보호자가 간병인에게 작성하는 리뷰를 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>review_no</code>: 리뷰 고유 번호 (PK)</li>
+  <li><code>matching_no</code>: 매칭 번호 (FK)</li>
+  <li><code>content</code>: 한 줄 리뷰 내용</li>
+</ul>
+
+<p><strong>특징:</strong> 매칭이 종료된 후 한 번만 작성 가능하며, 간병인의 평판에 반영됩니다.</p>
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /review/v1/simple-list | 간단 리뷰 리스트 조회 |
@@ -86,6 +111,20 @@
 
 ### HIRING (구인 공고)
 <img width="930" height="494" alt="스크린샷 2025-07-31 오후 5 36 39" src="https://github.com/user-attachments/assets/2b0642ab-d010-4221-9b2d-fbb10924fa91" />
+
+<p><strong>목적:</strong> 보호자가 등록하는 구인 공고를 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>hiring_no</code>: 공고 고유 번호 (PK)</li>
+  <li><code>guardian_no</code>: 보호자 식별 번호 (FK)</li>
+  <li><code>title</code>, <code>content</code>: 공고 제목과 설명</li>
+  <li><code>max_applicants</code>: 최대 지원자 수</li>
+  <li><code>care_status</code>: 숙식 제공 여부</li>
+  <li><code>hiring_status</code>: 모집 상태 (예: 'Y'=모집중, 'N'=마감)</li>
+</ul>
+
+<p><strong>특징:</strong> 이력서와 연결되어 간병인과의 매칭이 이루어지는 중심 테이블입니다.</p>
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
@@ -101,6 +140,19 @@
 ### RESUME (이력서)
 <img width="931" height="316" alt="스크린샷 2025-07-31 오후 5 37 02" src="https://github.com/user-attachments/assets/bd2f514c-6d70-484d-8cf9-138d11e3a4b0" />
 
+<p><strong>목적:</strong> 간병인이 등록한 이력서를 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>resume_no</code>: 이력서 고유 번호 (PK)</li>
+  <li><code>caregiver_no</code>: 간병인 식별 번호 (FK)</li>
+  <li><code>title</code>, <code>content</code>: 이력서 제목과 자기소개</li>
+  <li><code>care_status</code>: 현재 간병 중 여부</li>
+  <li><code>status</code>: 공개 여부 (Y: 공개, W: 대기, N: 삭제됨)</li>
+</ul>
+
+<p><strong>특징:</strong> 여러 장의 이력서를 관리할 수 있으며, 구인 공고 제안 시 사용됩니다.</p>
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /resume/v1/simple-list | 간단 이력서 리스트 조회 |
@@ -115,6 +167,18 @@
 ### PATIENT (환자)
 <img width="974" height="405" alt="스크린샷 2025-07-31 오후 5 37 28" src="https://github.com/user-attachments/assets/bd376263-3095-4e01-8868-fc2802048b98" />
 
+<p><strong>목적:</strong> 보호자에게 등록된 환자 정보를 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>patient_no</code>: 환자 고유 번호 (PK)</li>
+  <li><code>guardian_no</code>: 보호자 식별 번호 (FK)</li>
+  <li><code>name</code>, <code>gender</code>, <code>birth</code>: 기본 인적 정보</li>
+  <li><code>height</code>, <code>weight</code>, <code>phone</code>: 상세 정보</li>
+</ul>
+
+<p><strong>특징:</strong> 질병 태깅, 간병일지, 매칭 등 환자 중심의 연관 테이블과 연결됩니다.</p>
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /patient/v1?guardian_no={guardianNo} | 환자 리스트 조회 (보호자 기준) |
@@ -126,6 +190,14 @@
 ### DISEASE (질병)
 <img width="785" height="413" alt="스크린샷 2025-07-31 오후 5 38 19" src="https://github.com/user-attachments/assets/38026f7f-3d14-41dd-ae00-85ba6cde1c67" />
 
+<p><strong>목적:</strong> 병명 마스터 테이블로, 환자의 질환 정보를 분류합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>dis_no</code>: 병명 고유 번호 (PK)</li>
+  <li><code>name</code>: 병명 (예: 치매, 중풍 등)</li>
+</ul>
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /disease/v1 | 질병 리스트 조회 |
@@ -136,6 +208,19 @@
 ### REPORT (보고서)
 <img width="580" height="200" alt="스크린샷 2025-07-31 오후 5 38 45" src="https://github.com/user-attachments/assets/87884756-4e93-404d-8a2f-87be12690940" />
 
+<p><strong>목적:</strong> 간병인이 환자에 대해 작성하는 간병 일지를 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>report_no</code>: 보고서 고유 번호 (PK)</li>
+  <li><code>patient_no</code>: 환자 번호 (FK)</li>
+  <li><code>caregiver_no</code>: 간병인 번호 (FK)</li>
+  <li><code>report_content</code>: 상세 간병 내용 (LOB)</li>
+  <li><code>created_at</code>: 작성 일시</li>
+</ul>
+
+<p><strong>특징:</strong> 환자 상태 및 간병 진행 상황 기록에 사용됩니다.</p>
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /report/v1/{patNo} | 환자 보고서 리스트 조회 |
@@ -145,6 +230,19 @@
 
 ### PROPOSER (신청자)
 <img width="767" height="202" alt="스크린샷 2025-07-31 오후 5 39 22" src="https://github.com/user-attachments/assets/82503a2f-c3d3-46de-b88a-9ad354ad2e57" />
+
+<p><strong>목적:</strong> 간병인이 구인 공고에 제안한 내역을 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>proposer_no</code>: 제안 고유 번호 (PK)</li>
+  <li><code>resume_no</code>: 이력서 번호 (FK)</li>
+  <li><code>hiring_no</code>: 구인 공고 번호 (FK)</li>
+  <li><code>status</code>: 제안 상태 (예: 지원중, 취소됨)</li>
+</ul>
+
+<p><strong>특징:</strong> 간병인의 제안 기록으로 매칭 여부를 판단하는 기준이 됩니다.</p>
+
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
@@ -161,6 +259,18 @@
 
 ### MATCHING (매칭)
 <img width="743" height="256" alt="스크린샷 2025-07-31 오후 5 39 56" src="https://github.com/user-attachments/assets/30104971-5197-4707-8f81-1dd6e446d219" />
+
+<p><strong>목적:</strong> 간병인과 환자 간 매칭 내역을 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>matching_no</code>: 매칭 고유 번호 (PK)</li>
+  <li><code>proposer_no</code>: 제안 정보 (FK → PROPOSER)</li>
+  <li><code>matched_at</code>: 매칭 완료 일시</li>
+  <li><code>status</code>: 매칭 상태 (Y: 진행 중, N: 종료됨)</li>
+</ul>
+
+<p><strong>특징:</strong> 채팅, 리뷰, 보고서 등 다양한 기능과 연계되는 핵심 테이블입니다.</p>
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
