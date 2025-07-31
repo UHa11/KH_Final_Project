@@ -16,6 +16,7 @@
   <img width="649" height="661" alt="로그인" src="https://github.com/user-attachments/assets/a2bdeae6-3f0e-4154-93fd-125e798429e0" />
   <img width="616" height="672" alt="회원가입" src="https://github.com/user-attachments/assets/6d1d1c14-12fc-4179-ba27-0d08afad0d87" />
 
+<hr/>
 
 ### 개인정보 페이지
   <img width="477" height="512" alt="마이페이지 수정" src="https://github.com/user-attachments/assets/84bb07e0-0909-4f26-b3c6-f447f0e5717f" />
