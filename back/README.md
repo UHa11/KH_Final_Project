@@ -66,7 +66,7 @@
 ### COMMUNITY (게시판)
 <img width="1160" height="478" alt="스크린샷 2025-07-31 오후 5 33 42" src="https://github.com/user-attachments/assets/cb1a8947-bf0e-44d8-b07f-87099e5880f1" />
 
-<p><strong>목적:</strong> 보호자 및 간병인을 위한 커뮤니티 게시판 글을 저장합니다.</p>
+<p><strong>목적:</strong> 보호자 및 간병인을 위한 커뮤니티 게시판 글과 댓글을 저장합니다.</p>
 
 <p><strong>주요 컬럼:</strong></p>
 <ul>
@@ -75,6 +75,13 @@
   <li><code>role</code>: 게시글 유형 (G: 보호자, C: 간병인, Q: 질문)</li>
   <li><code>title</code>, <code>content</code>: 게시글 제목과 내용</li>
   <li><code>status</code>: 삭제 여부</li>
+  <li><code>created_at</code>: 작성 일시</li>
+</ul>
+<ul>
+  <li><code>reply_no</code>: 댓글 고유 번호 (PK)</li>
+  <li><code>board_no</code>: 댓글이 속한 게시글 번호 (FK)</li>
+  <li><code>user_no</code>: 댓글 작성자 번호 (FK)</li>
+  <li><code>content</code>: 댓글 내용</li>
   <li><code>created_at</code>: 작성 일시</li>
 </ul>
 
@@ -208,6 +215,13 @@
   <li><code>dis_no</code>: 병명 고유 번호 (PK)</li>
   <li><code>name</code>: 병명 (예: 치매, 중풍 등)</li>
 </ul>
+<ul>
+  <li><code>tag_no</code>: 태그 고유 번호 (PK)</li>
+  <li><code>patient_no</code>: 환자 번호 (FK)</li>
+  <li><code>dis_no</code>: 병명 번호 (FK)</li>
+</ul>
+
+<p><strong>특징:</strong> N:M 구조로 여러 병명에 대해 여러 환자에게 태깅할 수 있습니다.</p>
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
@@ -298,6 +312,20 @@
 ### NOTIFICATIONS (알림)
 <img width="852" height="231" alt="스크린샷 2025-07-31 오후 5 40 23" src="https://github.com/user-attachments/assets/e4c905a7-48fb-4653-acf5-d5b406b1c035" />
 
+<p><strong>목적:</strong> 사용자에게 알림(예: 새 메시지 도착, 제안 수락 등)을 제공하고 관리합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>notification_no</code>: 알림 고유 번호 (PK)</li>
+  <li><code>receiver_no</code>: 알림을 받을 사용자 번호 (FK → user.user_no)</li>
+  <li><code>content</code>: 알림 내용 (예: "새 메시지가 도착했습니다.")</li>
+  <li><code>notification_link_url</code>: 사용자가 클릭 시 이동할 페이지 URL</li>
+  <li><code>is_read</code>: 읽음 여부 (Y/N)</li>
+  <li><code>created_at</code>: 생성 일시</li>
+</ul>
+
+<p><strong>특징:</strong> 사용자가 실시간 또는 비동기적으로 이벤트를 인지할 수 있도록 알림 정보를 제공합니다.</p>
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /notifications/v1/list?user_no={userNo} | 사용자 알림 리스트 조회 |
@@ -318,6 +346,8 @@
 
 ### EMAIL (이메일 인증)
 <img width="622" height="166" alt="스크린샷 2025-07-31 오후 5 41 12" src="https://github.com/user-attachments/assets/c4ce3a25-df06-4303-80b2-a3fed0aca377" />
+
+
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
