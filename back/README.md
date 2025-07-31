@@ -20,7 +20,6 @@
 
 ### USERS (회원)
 <img width="800" height="385" alt="스크린샷 2025-07-31 오후 5 27 22" src="https://github.com/user-attachments/assets/2370056a-50e1-4e85-a9fc-5730d59d9523" />
-<img width="810" height="195" alt="스크린샷 2025-07-31 오후 6 03 54" src="https://github.com/user-attachments/assets/0bc26c11-4d2d-4c6a-a8d0-67d6b07b5ef2" />
 
 <p><strong>목적:</strong> 보호자 또는 간병인 공통 회원 정보를 저장합니다.</p>
 
@@ -33,8 +32,19 @@
 </ul>
 
 <p><strong>특징:</strong> 회원의 공통 정보만 저장되며, 역할에 따라 추가 정보는 다른 테이블에 분리되어 있습니다.</p>
- 
 
+<img width="810" height="195" alt="스크린샷 2025-07-31 오후 6 03 54" src="https://github.com/user-attachments/assets/0bc26c11-4d2d-4c6a-a8d0-67d6b07b5ef2" />
+
+<p><strong>목적:</strong> 간병 자격증 종류 마스터 정보를 저장합니다.</p>
+
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>license_no</code>: 자격증 고유 번호 (PK)</li>
+  <li><code>name</code>: 자격증 이름</li>
+  <li><code>issuer</code>: 발행처</li>
+</ul>
+
+<p><strong>특징:</strong> caregiver_license 테이블과 연결되어 간병인의 자격 보유 여부를 확인할 수 있습니다.</p>
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
