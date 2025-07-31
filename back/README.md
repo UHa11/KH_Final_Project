@@ -20,11 +20,7 @@
 
 ### USERS (회원)
 <img width="800" height="385" alt="스크린샷 2025-07-31 오후 5 27 22" src="https://github.com/user-attachments/assets/2370056a-50e1-4e85-a9fc-5730d59d9523" />
-- **목적**: 간병인·보호자 등 모든 사용자 정보 저장
-- **주요 필드**:
-  - `ROLE`: 사용자 유형 구분 (예: `'GUARDIAN'`, `'CAREGIVER'`)
-  - `SOCIAL_ID`, `SOCIAL_TYPE`: 소셜 로그인 대응
-  - `STATUS`: 탈퇴 여부 (`Y/N`)
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | POST | /users/v1 | 회원가입 (등록) |
