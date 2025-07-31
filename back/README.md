@@ -347,7 +347,18 @@
 ### EMAIL (이메일 인증)
 <img width="622" height="166" alt="스크린샷 2025-07-31 오후 5 41 12" src="https://github.com/user-attachments/assets/c4ce3a25-df06-4303-80b2-a3fed0aca377" />
 
+<p><strong>목적:</strong> 회원가입 또는 이메일 변경 시 이메일 인증 절차를 처리하기 위한 정보를 저장합니다.</p>
 
+<p><strong>주요 컬럼:</strong></p>
+<ul>
+  <li><code>id</code>: 인증 고유 번호 (PK)</li>
+  <li><code>email</code>: 인증 대상 이메일 주소</li>
+  <li><code>verification_code</code>: 이메일로 발송된 인증 코드</li>
+  <li><code>expiration_time</code>: 인증 코드 만료 시각</li>
+  <li><code>verified</code>: 인증 완료 여부 (BOOLEAN)</li>
+</ul>
+
+<p><strong>특징:</strong> 일정 시간 내 인증을 완료해야 하며, <code>verified</code> 플래그를 통해 인증 상태를 관리합니다.</p>
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
