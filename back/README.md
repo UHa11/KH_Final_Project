@@ -11,31 +11,16 @@
 - config : 스프링 및 보안 설정 클래스
 - exception : 사용자 정의 예외 처리
 
-
-## 주요 라이브러리
-- spring boot
-- spring security
-- jjwt (io.jsonwebtoken)
-- spring data jpa
-- mysql connector
-- spring boot devtools
-- spring validation
-- thymeleaf
-- spring mail
-- spring boot oauth2
-- amazon aws sdk (s3)
-- spring ai
-
-## 실행 방법
-
-```bash
-cd back
-./gradlew bootRun
-```
-
 ## API 명세
 
+### 전체 ERD 
+<img width="1478" height="545" alt="스크린샷 2025-07-31 오후 5 20 34" src="https://github.com/user-attachments/assets/c519361b-b4f3-4c82-a232-41b55f3b1976" />
+
+<hr/>
+
 ### USERS (회원)
+<img width="800" height="385" alt="스크린샷 2025-07-31 오후 5 27 22" src="https://github.com/user-attachments/assets/2370056a-50e1-4e85-a9fc-5730d59d9523" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | POST | /users/v1 | 회원가입 (등록) |
@@ -51,7 +36,11 @@ cd back
 | PATCH | /users/v1/{userNo}/change-password | 비밀번호 변경 |
 | GET | /users/v1?user_no={userNo} | 간병인 프로필 조회 |
 
+<hr/>
+
 ### COMMUNITY (게시판)
+<img width="1160" height="478" alt="스크린샷 2025-07-31 오후 5 33 42" src="https://github.com/user-attachments/assets/cb1a8947-bf0e-44d8-b07f-87099e5880f1" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /community/v1/caregiver | 간병인 게시판 리스트 조회 (option, keyword, page, size) |
@@ -67,7 +56,11 @@ cd back
 | PATCH | /community/v1/update | 게시글 수정 |
 | PATCH | /community/v1/update_reply | 댓글 수정 |
 
+<hr/>
+
 ### REVIEWS (리뷰)
+<img width="633" height="171" alt="스크린샷 2025-07-31 오후 5 34 58" src="https://github.com/user-attachments/assets/5ad22f9f-ced5-4f55-8f6e-7051fcc09b64" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /review/v1/simple-list | 간단 리뷰 리스트 조회 |
@@ -75,7 +68,11 @@ cd back
 | GET | /review/v1/detail?page={page}&resumeNo={resumeNo} | 리뷰 상세 조회 |
 | DELETE | /review/v1/delete?reviewNo={reviewNo} | 리뷰 삭제 |
 
+<hr/>
+
 ### HIRING (구인 공고)
+<img width="930" height="494" alt="스크린샷 2025-07-31 오후 5 36 39" src="https://github.com/user-attachments/assets/2b0642ab-d010-4221-9b2d-fbb10924fa91" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /hiring/v1/simple-list | 간단 구인 리스트 조회 |
@@ -85,7 +82,11 @@ cd back
 | GET | /hiring/v1/{hiringNo}/status | 구인 상태 조회 |
 | PATCH | /hiring/v1/{hiringNo} | 구인 글 삭제 혹은 상태 변경 |
 
+<hr/>
+
 ### RESUME (이력서)
+<img width="931" height="316" alt="스크린샷 2025-07-31 오후 5 37 02" src="https://github.com/user-attachments/assets/bd2f514c-6d70-484d-8cf9-138d11e3a4b0" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /resume/v1/simple-list | 간단 이력서 리스트 조회 |
@@ -95,25 +96,42 @@ cd back
 | GET | /resume/v1/user/all?userNo={userNo} | 내 이력서 모두 조회 (모달용)|
 | PATCH | /resume/v1/{resumeNo} | 이력서 수정 |
 
+<hr/>
+
 ### PATIENT (환자)
+<img width="974" height="405" alt="스크린샷 2025-07-31 오후 5 37 28" src="https://github.com/user-attachments/assets/bd376263-3095-4e01-8868-fc2802048b98" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /patient/v1?guardian_no={guardianNo} | 환자 리스트 조회 (보호자 기준) |
 | GET | /patient/v1/{patNo} | 환자 상세 조회 |
 | PATCH | /patient/v1/{patNo} | 환자 정보 수정 |
 
+<hr/>
+
 ### DISEASE (질병)
+<img width="785" height="413" alt="스크린샷 2025-07-31 오후 5 38 19" src="https://github.com/user-attachments/assets/38026f7f-3d14-41dd-ae00-85ba6cde1c67" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /disease/v1 | 질병 리스트 조회 |
 | GET | /patients/v1?disNo={disNo} | 특정 질병 상세 조회 |
 
+<hr/>
+
 ### REPORT (보고서)
+<img width="580" height="200" alt="스크린샷 2025-07-31 오후 5 38 45" src="https://github.com/user-attachments/assets/87884756-4e93-404d-8a2f-87be12690940" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /report/v1/{patNo} | 환자 보고서 리스트 조회 |
-| GET | /report/v1/detail/{reportNo} | 보고서 상세 조회 |
+| GET | /report/v1/detail/{reportNo} | 보고서 상세 조회 
+
+<hr/>  
+
 ### PROPOSER (신청자)
+<img width="767" height="202" alt="스크린샷 2025-07-31 오후 5 39 22" src="https://github.com/user-attachments/assets/82503a2f-c3d3-46de-b88a-9ad354ad2e57" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /proposer/v1?hiring_no={hiringNo} | 공고별 신청자 리스트 조회 |
@@ -125,7 +143,11 @@ cd back
 | DELETE | /proposer/v1/{proposerNo} | 신청 기록 삭제 |
 | GET | /proposer/v1/hiring/{hiringNo}/owner | 구인 공고 주인 조회 |
 
+<hr/>
+
 ### MATCHING (매칭)
+<img width="743" height="256" alt="스크린샷 2025-07-31 오후 5 39 56" src="https://github.com/user-attachments/assets/30104971-5197-4707-8f81-1dd6e446d219" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /matching/v1?pat_no={patNo}&status={status} | 환자 매칭 리스트 조회 |
@@ -136,7 +158,11 @@ cd back
 | GET | /matching/v1/matched/check | 매칭 상태 체크 |
 | GET | /matching/v1/matched/date | 매칭 날짜 리스트 조회 |
 
+<hr/>
+
 ### NOTIFICATIONS (알림)
+<img width="852" height="231" alt="스크린샷 2025-07-31 오후 5 40 23" src="https://github.com/user-attachments/assets/e4c905a7-48fb-4653-acf5-d5b406b1c035" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /notifications/v1/list?user_no={userNo} | 사용자 알림 리스트 조회 |
@@ -145,23 +171,33 @@ cd back
 | DELETE | /notifications/v1/delete-all?user_no={userNo} | 전체 알림 삭제 |
 | DELETE | /notifications/v1/{notificationNo} | 특정 알림 삭제 |
 
+<hr/>
+
 ### API (주소)
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /api/address/region?cd={cd} | 시/도/구 등 행정구역 조회 |
 | GET | /api/address/region | 시/도 리스트 조회 |
 
+<hr/>
+
 ### EMAIL (이메일 인증)
+<img width="622" height="166" alt="스크린샷 2025-07-31 오후 5 41 12" src="https://github.com/user-attachments/assets/c4ce3a25-df06-4303-80b2-a3fed0aca377" />
+
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | POST | /auth/email/send-reset-link | 비밀번호 초기화 링크 이메일 발송 |
 | POST | /auth/email/send-code | 이메일 인증 코드 발송 |
 | POST | /auth/email/verify | 이메일 인증 코드 검증 |
 
+<hr/>
+
 ### AI
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | GET | /ai?pat_no={patNo} | AI 연동 환자 정보 요청 |
+
+<hr/>
 
 ## 환경 변수
 | 변수 경로                          | 설명                                 | 예시 또는 값 예시                                                                 |
