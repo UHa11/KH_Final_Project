@@ -20,7 +20,7 @@
 
 ### USERS (회원)
 <img width="800" height="385" alt="스크린샷 2025-07-31 오후 5 27 22" src="https://github.com/user-attachments/assets/2370056a-50e1-4e85-a9fc-5730d59d9523" />
-
+<p></p>
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
 | POST | /users/v1 | 회원가입 (등록) |
