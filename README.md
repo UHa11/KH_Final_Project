@@ -39,44 +39,7 @@ Communication / IDE
 <img src="https://img.shields.io/badge/VSCode-007ACC?style=flat-square&logo=visualstudiocode&logoColor=white"/>
 <img src="https://img.shields.io/badge/IntelliJ%20IDEA-000000?style=flat-square&logo=intellijidea&logoColor=white"/>
 
-## 사용 라이브러리및 API
-### Front-End
-- react
-- zustant
-- react-router-dom
-- react-hook-form
-- yup
-- axios
-- styled-component
-- @mui/material
-- @emotion/react / @emotion/styled
-- date-fns
-- dayjs
-- react-draggable
-- react-datepicker
-- react-textarea-autosize
-- react-icons
-- react-spinners
-- react-js-pagination
-- react-toastify
-- dotenv
-- js-cookie
-
-### Back-End
-- spring boot  
-- spring security  
-- jjwt (io.jsonwebtoken)  
-- spring data jpa  
-- mysql connector  
-- spring boot devtools  
-- spring validation  
-- thymeleaf  
-- spring mail  
-- spring boot oauth2  
-- amazon aws sdk (s3)  
-- spring ai
-
-### API
+## 사용 API
 - Google Oauth 2.0 API : 소셜 로그인 인증
 - Sgis Open API : 지역명 조회
 - Kakao map API : 주소 검색
