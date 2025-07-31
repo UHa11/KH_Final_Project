@@ -20,6 +20,7 @@
 
 ### USERS (회원)
 <img width="800" height="385" alt="스크린샷 2025-07-31 오후 5 27 22" src="https://github.com/user-attachments/assets/2370056a-50e1-4e85-a9fc-5730d59d9523" />
+<img width="810" height="195" alt="스크린샷 2025-07-31 오후 6 03 54" src="https://github.com/user-attachments/assets/0bc26c11-4d2d-4c6a-a8d0-67d6b07b5ef2" />
 
 <p><strong>목적:</strong> 보호자 또는 간병인 공통 회원 정보를 저장합니다.</p>
 
