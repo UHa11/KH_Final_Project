@@ -12,6 +12,8 @@
 
 ## 주요 페이지
 - 로그인 및 회원가입 페이지
+  <img width="908" height="894" alt="스크린샷 2025-07-31 오후 3 58 47" src="https://github.com/user-attachments/assets/04d45ece-daed-4322-9e03-c073880831f9" />
+
 - 개인정보 페이지
 - 구인목록 및 구인상세페이지
 - 구직목록 및 구직상세페이지
