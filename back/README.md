@@ -22,14 +22,14 @@
 <img width="800" height="385" alt="스크린샷 2025-07-31 오후 5 27 22" src="https://github.com/user-attachments/assets/2370056a-50e1-4e85-a9fc-5730d59d9523" />
 
 <p>목적 : 보호자 또는 간병인 공통 회원 정보를 저장합니다.</p>
-<p>
-  주요 컬럼 :
-  user_no : 회원 식별을 위한 기본키
-  id, password, name, phone, email, gender : 공통 로그인 및 연락 정보
-  role : 사용자 역할 (e.g., 사용자 / 관리자 구분)
-  address, birth, profile_image : 추가 프로필 정보
-  특징 : 회원의 공통 정보만 저장되며, 역할에 따라 추가 정보는 다른 테이블에 분리되어 있습니다.
-</p>
+<p>주요 컬럼 :</p>
+<p>user_no : 회원 식별을 위한 기본키</p> 
+<p>id, password, name, phone, email, gender : 공통 로그인 및 연락 정보</p>  
+<p>role : 사용자 역할 (e.g., 사용자 / 관리자 구분)</p>
+<p>address, birth, profile_image : 추가 프로필 정보</p>
+<p>특징 : 회원의 공통 정보만 저장되며, 역할에 따라 추가 정보는 다른 테이블에 분리되어 있습니다.</p>
+ 
+
 
 | 메서드 | 엔드포인트        | 설명           |
 | ------ | ---------------- | -------------- |
