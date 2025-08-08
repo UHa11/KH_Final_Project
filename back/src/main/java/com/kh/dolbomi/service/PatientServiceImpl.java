@@ -6,11 +6,13 @@ import com.kh.dolbomi.domain.DiseaseTag;
 import com.kh.dolbomi.domain.Patient;
 import com.kh.dolbomi.domain.User;
 import com.kh.dolbomi.dto.PatientDto;
+import com.kh.dolbomi.enums.StatusEnum.Status;
 import com.kh.dolbomi.exception.GuardianNotLinkedException;
 import com.kh.dolbomi.exception.PatientNotFoundException;
 import com.kh.dolbomi.exception.UserNotFoundException;
 import com.kh.dolbomi.repository.DiseaseRepository;
 import com.kh.dolbomi.repository.PatientRepository;
+import com.kh.dolbomi.repository.PatientRepositoryV2;
 import com.kh.dolbomi.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +28,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
     private final DiseaseRepository diseaseRepository;
+    private final PatientRepositoryV2 patientRepositoryV2;
 
     @Override
     public Long createPatient(PatientDto.Create createDto) {
@@ -52,21 +55,32 @@ public class PatientServiceImpl implements PatientService {
                 diseaseTag.changePatient(patient);
             }
         }
-
-        return patientRepository.save(patient).getPatNo();
+        return patientRepositoryV2.save(patient)
+                .getGuardian().getUserNo();
+//        return patientRepository.save(patient).getPatNo();
     }
 
     @Override
     public List<PatientDto.Response> getListPatient(Long userNo) {
-        return patientRepository.findByAll(userNo).stream()
+
+//        return patientRepository.findByAll(userNo).stream()
+//                .map(PatientDto.Response::toDto)
+//                .collect(Collectors.toList());
+
+        List<Patient> patients = patientRepositoryV2.findByGuardian_UserNoAndStatus(userNo, Status.Y);
+
+        return patients.stream()
                 .map(PatientDto.Response::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PatientDto.Response getPatient(Long patNo) {
-        Patient patient = patientRepository.findOne(patNo).
-                orElseThrow(() -> new PatientNotFoundException("해당 환자를 찾을 수 없습니다."));
+//        Patient patient = patientRepository.findOne(patNo).
+//                orElseThrow(() -> new PatientNotFoundException("해당 환자를 찾을 수 없습니다."));
+
+        Patient patient = patientRepositoryV2.findById(patNo)
+                .orElseThrow(() -> new PatientNotFoundException("해당 환자를 찾을 수 없습니다."));
 
         // 보호자 추출
         User user = patient.getGuardian(); // 또는 getUser() 등 필드에 따라 다름
