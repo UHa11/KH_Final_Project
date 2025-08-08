@@ -47,7 +47,7 @@ const Patient = () => {
           <MainSubmitBtn onClick={() => navigate('/guardian/patientregisteration')}>돌봄대상자 등록</MainSubmitBtn>
         </Head>
 
-        <CardWrap>
+        <CardWrap $userPatients={userPatients}>
           {Array.isArray(userPatients) && userPatients.length > 0 ? (
             <>
               {userPatients?.map((pat) => (
@@ -90,7 +90,8 @@ const Patient = () => {
 export default Patient;
 
 const CardWrap = styled.div`
-  display: ${({ userPatients }) => (Array.isArray(userPatients) && userPatients.length > 0 ? 'gird' : 'flex')};
+  display: ${({ $userPatients }) => (Array.isArray($userPatients) && $userPatients.length > 0 ? 'grid' : 'flex')};
+
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   align-content: start;
   gap: ${({ theme }) => theme.spacing[5]}; /* 카드 간 간격 */

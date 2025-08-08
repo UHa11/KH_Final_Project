@@ -1,5 +1,7 @@
 package com.kh.dolbomi.controller;
 
+import com.kh.dolbomi.auth.JwtTokenProvider;
+import com.kh.dolbomi.repository.UserRepositoryV2;
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
@@ -27,22 +29,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RAGController {
 
+
     @Autowired
     private ChatModel chatModel;
-
     //텍스트를 백터(숫자 배열)로 변환하는 모델
     //gpt의 text-embedding-ada-002, text-embedding-3-small등을 사용해서
     //의미적으로 유사한 텍스트는 유사한 백터로 변환을 시키는 모델
     @Autowired
     private EmbeddingModel embeddingModel;
-
     /*
     SpringAI의 vectorStore 인터페이스를 구현한 인메모리 벡터 스토어.
     문서를 백터로 변환하여 메모리에 저장하고, 유사도 검색을 수행
      */
-
-
     private VectorStore vectorStore;
+    @Autowired
+    private UserRepositoryV2 userRepository;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     //    @PostConstruct : 빈이 생성되고 의존성주입이 끝난 후에 자동으로 실행되는 초기화 메서드
     @PostConstruct
@@ -97,12 +100,17 @@ public class RAGController {
             //GPT에게 전달하여 답변을 생성
             ChatClient chatClient = ChatClient.builder(chatModel).build();
 
+            String email = jwtTokenProvider.getUserIdFromToken();
+
             String prompt = """
-                    다음 돌봄이 이용 가이드 문서를 참고해서 질문에 답변해줘.
+                    [역할]
+                    너는 돌보미 플랫폼 고객센터 상담사야.
+                    다음 돌봄이 이용 가이드 문서를 참고해서 질문에 답변해줘.   
+                    질문한 사용자의 연령에 맟춰 답변을 해주고, 연령이 높을수록 절차을 포함한
                     문서에 없는 내용은 '해당정보는 1:1문의에 문의 부탁드립니다'라고 답변해줘.
                     \n
                     [문서내용]
-                    
+                                        
                     """ + context + "\n\n[질문]\n" + question;
 
             String answer = chatClient.prompt(prompt).call().content();

@@ -21,7 +21,9 @@ public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
     public List<Patient> findByAll(Long guardianNo) {
-        return em.createQuery("SELECT p FROM Patient p WHERE p.guardian.userNo = :guardianNo and p.status = 'Y'",
+        return em.createQuery(
+                        "SELECT p FROM Patient p "
+                                + "WHERE p.guardian.userNo = :guardianNo and p.status = 'Y'",
                         Patient.class)
                 .setParameter("guardianNo", guardianNo)
                 .getResultList();
